@@ -1,0 +1,106 @@
+####################################
+# GLOBAL
+####################################
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+
+# Editor / IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+####################################
+# BACKEND (Spring Boot - Maven or Gradle)
+####################################
+# Maven
+/backend/target/
+/backend/.mvn/
+/backend/mvnw
+/backend/mvnw.cmd
+
+# Gradle (if used)
+/backend/.gradle/
+!/backend/gradle/wrapper/gradle-wrapper.jar
+/backend/gradlew
+/backend/gradlew.bat
+/backend/build/
+
+# Other Java-related
+/backend/*.class
+/backend/*.jar
+/backend/*.war
+/backend/*.ear
+/backend/out/
+
+# IDE specific
+/backend/.classpath
+/backend/.project
+/backend/.settings/
+/backend/.idea/
+
+# Misc
+/backend/*.log
+/backend/.env
+/backend/.DS_Store
+
+####################################
+# FRONTEND (React - Create React App)
+####################################
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+
+# Testing
+/frontend/coverage/
+frontend/jest.config.js
+/frontend/.turbo/
+
+# Cache
+/frontend/.next/
+/frontend/.vite/
+/frontend/.cache/
+/frontend/.parcel-cache/
+/frontend/.eslintcache
+
+# IDE specific
+/frontend/.vscode/
+frontend/.idea/
+
+# Misc
+/frontend/.DS_Store
+/frontend/*.log
+
+####################################
+#Docker & CI/CD
+####################################
+.dockerignore
+docker-compose.override.yml
+docker-compose.dev.yml
+*.pid
+*.seed
+*.tgz
+*.bak
+*.orig
+*.rej
+
+# Ignore build outputs in root (if any)
+build/
+dist/
