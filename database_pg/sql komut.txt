@@ -184,3 +184,11 @@ ALTER TABLE IF EXISTS public.calisan_mesai
     OWNER to postgres;
 
 ALTER TABLE IF EXISTS public.proje DROP CONSTRAINT IF EXISTS ekip_id_fk;
+
+ALTER TABLE IF EXISTS public.kisisel_bilgiler DROP CONSTRAINT IF EXISTS ekip_id_fk;
+
+ALTER TABLE IF EXISTS public.kisisel_bilgiler DROP COLUMN IF EXISTS ekip_id;
+
+ALTER TABLE IF EXISTS public.kisisel_bilgiler
+    ADD COLUMN ekip_id integer[];
+
