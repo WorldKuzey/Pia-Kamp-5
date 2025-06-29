@@ -196,7 +196,6 @@ ALTER TABLE IF EXISTS public.kisisel_bilgiler
     ADD CONSTRAINT dept_id_fk FOREIGN KEY (dept_id)
     REFERENCES public.departman (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 CREATE INDEX IF NOT EXISTS fki_dept_id_fk
     ON public.kisisel_bilgiler(dept_id);
