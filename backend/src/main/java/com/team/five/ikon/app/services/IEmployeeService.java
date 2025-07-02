@@ -2,6 +2,7 @@ package com.team.five.ikon.app.services;
 
 import com.team.five.ikon.app.dto.EmployeeDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
+import com.team.five.ikon.app.dto.RegisterRequestDTO;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface IEmployeeService {
     void delete(String id);
     EmployeeDTO register(EmployeeDTO dto);
     EmployeeDTO login(LoginRequestDTO loginRequest);
+    EmployeeDTO register(RegisterRequestDTO requestDTO);
+
 }
