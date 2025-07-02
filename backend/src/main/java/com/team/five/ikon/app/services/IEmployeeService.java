@@ -12,6 +12,53 @@ public interface IEmployeeService {
     void delete(String id);
     EmployeeDTO register(EmployeeDTO dto);
     EmployeeDTO login(LoginRequestDTO loginRequest);
-    EmployeeDTO register(RegisterRequestDTO requestDTO);
+    EmployeeDTO HR_register(RegisterRequestDTO requestDTO);
+
+
+
+
+    /// /// Tural 20-40//////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// ////ENES 40-60////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// ////////////BILGE 60+////////////////
+
 
 }
