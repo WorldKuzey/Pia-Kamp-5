@@ -3,11 +3,8 @@ package com.team.five.ikon.app.controller;
 import com.team.five.ikon.app.dto.EmployeeDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
-import com.team.five.ikon.app.repository.EmployeeRepository;
-import com.team.five.ikon.app.entity.Employee;
 import com.team.five.ikon.app.services.impl.EmployeeServiceIMPL;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +14,8 @@ import java.util.List;
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
+
+    //deneme
 
     private final EmployeeServiceIMPL employeeService;
 
