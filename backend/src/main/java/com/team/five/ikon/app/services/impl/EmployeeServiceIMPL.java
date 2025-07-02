@@ -37,18 +37,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     public void delete(String id) {
         employeeRepository.deleteById(id);
     }
-/*
-    @Override
-    public EmployeeDTO register(EmployeeDTO dto) {
-        if (employeeRepository.findByEmail(dto.getEmail()) != null) {
-            throw new RuntimeException("Email already exists");
-        }
-        Employee employee = convertToEntity(dto);
-        return convertToDTO(employeeRepository.save(employee));
-    }
 
-
- */
     @Override
     public EmployeeDTO register(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
@@ -78,7 +67,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
     @Override
-    public EmployeeDTO register(RegisterRequestDTO requestDTO) {
+    public EmployeeDTO HR_register(RegisterRequestDTO requestDTO) {
         if (employeeRepository.findByEmail(requestDTO.getEmail()) != null) {
             throw new RuntimeException("Email already registered");
         }
@@ -95,6 +84,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         BeanUtils.copyProperties(employee, response);
         return response;
     }
+
+
 
 
     private EmployeeDTO convertToDTO(Employee employee) {
