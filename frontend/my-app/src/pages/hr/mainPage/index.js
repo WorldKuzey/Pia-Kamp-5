@@ -1,5 +1,5 @@
 import React from "react";
-import HRLayout from "../../components/layout/AppLayout.js";
+import HRLayout from "../../../components/layout/AppLayout.js";
 
 const HRDashboard = () => {
   return (
