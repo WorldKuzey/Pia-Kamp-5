@@ -8,15 +8,14 @@ const useLogin = () => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post("/login", {
+      const res = await axios.post("api/employees/login", {
         email,
         password,
       });
-      console.log("selamm");
       const user = res.data; // { name, email, role }
       loginUser(user); // context'e set et
 
-      navigate(user.role === "hr" ? "/hr/dashboard" : "/employee/dashboard");
+      navigate(user.role === "HR" ? "/hr-mainpage" : "/employee-mainpage");
     } catch (err) {
       alert("Login failed: " + (err.response?.data?.message || err.message));
     }
