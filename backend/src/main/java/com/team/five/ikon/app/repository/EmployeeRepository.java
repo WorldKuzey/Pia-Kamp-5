@@ -1,6 +1,6 @@
-package com.team.five.ikon.app.adapter;
+package com.team.five.ikon.app.repository;
 
-import com.team.five.ikon.app.domain.entity.Employee;
+import com.team.five.ikon.app.entity.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

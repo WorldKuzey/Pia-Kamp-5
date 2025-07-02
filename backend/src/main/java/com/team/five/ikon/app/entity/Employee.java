@@ -1,4 +1,4 @@
-package com.team.five.ikon.app.domain.entity;
+package com.team.five.ikon.app.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
