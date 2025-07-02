@@ -34,19 +34,21 @@ public class EmployeeController {
     public void delete(@PathVariable String id) {
         employeeService.delete(id);
     }
-/*
+
     @PostMapping("/register")
     public EmployeeDTO register(@RequestBody EmployeeDTO dto) {
         return employeeService.register(dto);
     }
 
- */
 
-    @PostMapping("/register")
-    public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requestDTO) {
-        EmployeeDTO registeredUser = employeeService.register(requestDTO);
+
+    @PostMapping("/hr_register")
+    public ResponseEntity<EmployeeDTO> HR_register(@RequestBody RegisterRequestDTO requestDTO) {
+        EmployeeDTO registeredUser = employeeService.HR_register(requestDTO);
         return ResponseEntity.ok(registeredUser);
     }
+
+
 
    /* @PostMapping("/login")
     public EmployeeDTO login(@RequestBody LoginRequestDTO loginRequest) {

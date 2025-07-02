@@ -37,7 +37,9 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     public void delete(String id) {
         employeeRepository.deleteById(id);
     }
-/*
+
+
+
     @Override
     public EmployeeDTO register(EmployeeDTO dto) {
         if (employeeRepository.findByEmail(dto.getEmail()) != null) {
@@ -47,26 +49,6 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         return convertToDTO(employeeRepository.save(employee));
     }
 
-
- */
-    @Override
-    public EmployeeDTO register(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDTO, employee);
-
-        // Hash the password
-        employee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
-
-        // Default role (if none)
-        if (employee.getRole() == null) {
-            employee.setRole("HR");
-        }
-
-        // Save to DB
-        Employee saved = employeeRepository.save(employee);
-
-        return convertToDTO(saved);
-    }
 
     @Override
     public EmployeeDTO login(LoginRequestDTO loginRequest) {
@@ -78,7 +60,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
     @Override
-    public EmployeeDTO register(RegisterRequestDTO requestDTO) {
+    public EmployeeDTO HR_register(RegisterRequestDTO requestDTO) {
         if (employeeRepository.findByEmail(requestDTO.getEmail()) != null) {
             throw new RuntimeException("Email already registered");
         }
@@ -95,7 +77,6 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         BeanUtils.copyProperties(employee, response);
         return response;
     }
-
 
     private EmployeeDTO convertToDTO(Employee employee) {
         EmployeeDTO dto = new EmployeeDTO();
