@@ -100,4 +100,38 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         BeanUtils.copyProperties(dto, employee);
         return employee;
     }
+
+
+
+
+    /// ///TURAL 100-300 /////////////
+
+
+
+
+
+
+
+
+
+
+
+
+    /// /////////ENES 300- 500///////
+
+
+
+
+
+
+
+
+
+    /// /// BILGE 500+ ////////////////
+
+
+
+
+
+
 }

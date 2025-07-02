@@ -14,4 +14,51 @@ public interface IEmployeeService {
     EmployeeDTO login(LoginRequestDTO loginRequest);
     EmployeeDTO HR_register(RegisterRequestDTO requestDTO);
 
+
+
+
+    /// /// Tural 20-40//////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// ////ENES 40-60////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// ////////////BILGE 60+////////////////
+
+
 }
