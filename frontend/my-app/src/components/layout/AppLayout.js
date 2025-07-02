@@ -7,8 +7,8 @@ const AppLayout = ({ children }) => {
   // localStorage'dan role alınır (context ile de yapılabilir)
   const role = localStorage.getItem("role");
 
-  const menu = role === "hr" ? HR_MENU : EMPLOYEE_MENU;
-  const title = role === "hr" ? "HR Panel" : "Employee Panel";
+  const menu = role === "HR" ? HR_MENU : EMPLOYEE_MENU;
+  const title = role === "HR" ? "HR Panel" : "Employee Panel";
 
   return (
     <div className="flex flex-col h-screen">

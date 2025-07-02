@@ -1,8 +1,8 @@
 import React from "react";
 import EmployeeLayout from "../../../components/layout/AppLayout";
 
-const EmployeeDashboard = () => {
-  const role = localStorage.getItem("role"); // Gerçek senaryoda context'ten alınır
+const EmployeeMainPage = () => {
+  const role = localStorage.getItem("role");
 
   return (
     <EmployeeLayout role={role}>
@@ -12,4 +12,4 @@ const EmployeeDashboard = () => {
   );
 };
 
-export default EmployeeDashboard;
+export default EmployeeMainPage;
