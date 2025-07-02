@@ -12,6 +12,6 @@ public interface IEmployeeService {
     void delete(String id);
     EmployeeDTO register(EmployeeDTO dto);
     EmployeeDTO login(LoginRequestDTO loginRequest);
-    EmployeeDTO HR_register(RegisterRequestDTO requestDTO);
+    EmployeeDTO register(RegisterRequestDTO requestDTO);
 
 }
