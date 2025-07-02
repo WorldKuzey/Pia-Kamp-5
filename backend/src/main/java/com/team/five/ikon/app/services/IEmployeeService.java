@@ -1,6 +1,7 @@
 package com.team.five.ikon.app.services;
 
 import com.team.five.ikon.app.dto.EmployeeDTO;
+import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 
@@ -38,8 +39,8 @@ public interface IEmployeeService {
 
 
 
-    /// ////ENES 40-60////////////
-
+    /// ////ENES 40-60////////////,
+    List<EmployeeSummaryDTO> getAllEmployeeSummaries();// Tüm çalışanları listeler
 
 
 

@@ -1,6 +1,7 @@
 package com.team.five.ikon.app.controller;
 
 import com.team.five.ikon.app.dto.EmployeeDTO;
+import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 import com.team.five.ikon.app.services.impl.EmployeeServiceIMPL;
@@ -133,7 +134,26 @@ public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requ
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////// ENES 150-250 ////////////////////////////////////////////////
+
+@GetMapping("/summaries")
+public List<EmployeeSummaryDTO> getAllSummaries() {
+    return employeeService.getAllEmployeeSummaries();
+}
 
 
 

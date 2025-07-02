@@ -1,6 +1,7 @@
 package com.team.five.ikon.app.services.impl;
 
 import com.team.five.ikon.app.dto.EmployeeDTO;
+import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 import com.team.five.ikon.app.entity.Employee;
@@ -117,8 +118,198 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
 
 
-    /// /////////ENES 300- 500///////
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// /////////ENES 300- 500///////
+    @Override
+    public List<EmployeeSummaryDTO> getAllEmployeeSummaries() {
+        return employeeRepository.findAll().stream().map(employee -> {
+            EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
+            dto.setFirstName(employee.getFirstName());
+            dto.setLastName(employee.getLastName());
+            dto.setRole(employee.getRole());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
 
 
