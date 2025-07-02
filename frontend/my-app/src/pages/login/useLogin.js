@@ -1,30 +1,24 @@
-// src/pages/login/useLogin.js
-
 import { useNavigate } from "react-router-dom";
-import { fakeUsers } from "../../data/users"; // kullanıcı verileri
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 const useLogin = () => {
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
-  const login = (email, password) => {
-    const foundUser = fakeUsers.find(
-      (user) => user.email === email && user.password === password
-    );
+  const login = async (email, password) => {
+    try {
+      const res = await axios.post("/login", {
+        email,
+        password,
+      });
+      console.log("selamm");
+      const user = res.data; // { name, email, role }
+      loginUser(user); // context'e set et
 
-    if (!foundUser) {
-      alert("Geçersiz e-posta veya şifre!");
-      return;
-    }
-
-    // Giriş başarılı → rolü kaydet
-    localStorage.setItem("role", foundUser.role);
-
-    // Role göre yönlendir
-    if (foundUser.role === "hr") {
-      navigate("/hr/dashboard");
-      console.log(foundUser.role);
-    } else {
-      navigate("/employee/dashboard");
+      navigate(user.role === "hr" ? "/hr/dashboard" : "/employee/dashboard");
+    } catch (err) {
+      alert("Login failed: " + (err.response?.data?.message || err.message));
     }
   };
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/login";
-import HRDashboard from "./pages/hr/dashboard.js";
-import EmployeeDashboard from "./pages/employee/dashboard.js";
+import LoginPage from "./pages/login/index.js";
+import HRMainPage from "./pages/hr/mainPage/index.js";
+import EmployeeMainPage from "./pages/employee/mainPage/index.js";
 import ProtectedRoute from "./components/routing/ProtectedRoute.js";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
           path="/hr/dashboard"
           element={
             <ProtectedRoute allowedRoles={["hr"]}>
-              <HRDashboard />
+              <HRMainPage />
             </ProtectedRoute>
           }
         />
@@ -23,7 +23,7 @@ function App() {
           path="/employee/dashboard"
           element={
             <ProtectedRoute allowedRoles={["employee"]}>
-              <EmployeeDashboard />
+              <EmployeeMainPage />
             </ProtectedRoute>
           }
         />
