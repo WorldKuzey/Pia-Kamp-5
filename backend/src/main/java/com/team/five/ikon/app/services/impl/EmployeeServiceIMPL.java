@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -595,9 +599,48 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         employee.setPassword(passwordEncoder.encode(dto.getPassword()));
         //employee.setRole(dto.getRole());
         employee.setRole("employee");
+        //yeni eklenen özellikler
+
+        employee.setGender(dto.getGender());
+        employee.setTc(dto.getTc());
+        employee.setSalary(dto.getSalary());
+        employee.setAddress(dto.getAddress());
+        employee.setDate_of_birth(dto.getDate_of_birth());
+
+
+        // doğum yılı ve yaşı utility (yardımcı) methodları kullanarak oluşturma
+
+        // LocalDate ile hesaplamalar:
+        LocalDate birthDate = dto.getDate_of_birth();
+        employee.setBirth_year(calculateBirthYear(birthDate));
+        employee.setAge(calculateAge(birthDate));
+
+
         Employee emp_saved = employeeRepository.save(employee);
         return convertToDTO(emp_saved);
     }
+
+
+
+
+// çalışanın date türündeki doğum tarihinden doğum yılını bulma methodu
+
+    //date'i local date'e çeviriyor. ardından shorta cast edip, db'de employee'nin
+    // birth year değerini dolduruyor.
+
+    public short calculateBirthYear(LocalDate birthDate) {
+        if (birthDate == null) throw new IllegalArgumentException("birthDate boş olamaz");
+        return (short) birthDate.getYear();
+    }
+
+    //çalışanın birth year değişkenini ve anlık tarihi kullanarak yaşını hesaplayan method
+
+    public short calculateAge(LocalDate birthDate) {
+        if (birthDate == null) throw new IllegalArgumentException("birthDate boş olamaz");
+        LocalDate today = LocalDate.now();
+        return (short) Period.between(birthDate, today).getYears();
+    }
+
 
     //silinmek istenen user yoksa uyarı methodu (postman body message uyarısı)
     public void delete(String id) {

@@ -3,7 +3,7 @@ package com.team.five.ikon.app.dto;
 import com.team.five.ikon.app.enums.Gender;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class EmployeeDTO {
@@ -20,8 +20,18 @@ public class EmployeeDTO {
     private long tc;
     private short salary;
     private String address;
-    private Date date_of_birth;
+
+
+
+    /* LocalDate tür olarak doğum tarihini YIL-AY-GÜN (yyyy-MM-dd) şeklinde tutuyor.
+    Kullanıcı da arayüzde ters girse bile kaydederken bu şekilde girmeli ki yaşını hesaplama
+    işlemi doğru çalışabilsin */
+
+
+    private LocalDate date_of_birth;  // burayı Date'den LocalDate'e değiştirdik
     private short age;
+    private short birth_year;
+
 
 
 }
