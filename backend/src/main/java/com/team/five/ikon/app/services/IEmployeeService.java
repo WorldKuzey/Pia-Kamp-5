@@ -20,7 +20,7 @@ public interface IEmployeeService {
 
     /// /// Tural 20-40//////
 
-
+    EmployeeDTO getEmployeeById(String id);
 
 
 

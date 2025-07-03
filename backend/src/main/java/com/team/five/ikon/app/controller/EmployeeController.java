@@ -4,7 +4,7 @@ import com.team.five.ikon.app.dto.EmployeeDTO;
 import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
-import com.team.five.ikon.app.services.impl.EmployeeServiceIMPL;
+import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,23 +18,23 @@ public class EmployeeController {
 
 
 
-    private final EmployeeServiceIMPL employeeService;
+    private final IEmployeeService IEmployeeService;
 
     @GetMapping
     public List<EmployeeDTO> getAll() {
-        return employeeService.getAllEmployees();
+        return IEmployeeService.getAllEmployees();
     }
 
     @PostMapping
     public EmployeeDTO create(@RequestBody EmployeeDTO dto) {
-        return employeeService.create(dto);
+        return IEmployeeService.create(dto);
     }
 
 
 
     @PostMapping("/login")
     public ResponseEntity<EmployeeDTO> login(@RequestBody LoginRequestDTO loginRequest) {
-        EmployeeDTO dto = employeeService.login(loginRequest);
+        EmployeeDTO dto = IEmployeeService.login(loginRequest);
         return ResponseEntity.ok(dto);
     }
 
@@ -45,11 +45,16 @@ public class EmployeeController {
 
 @PostMapping("/hr_register")
 public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requestDTO) {
-    EmployeeDTO registeredUser = employeeService.HR_register(requestDTO);
+    EmployeeDTO registeredUser = IEmployeeService.HR_register(requestDTO);
     return ResponseEntity.ok(registeredUser);
 }
 
 
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable String id) {
+        EmployeeDTO employee = IEmployeeService.getEmployeeById(id);
+        return ResponseEntity.ok(employee);
+    }
 
 
 
@@ -148,7 +153,7 @@ public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requ
 
 @GetMapping("/summaries")
 public List<EmployeeSummaryDTO> getAllSummaries() {
-    return employeeService.getAllEmployeeSummaries();
+    return IEmployeeService.getAllEmployeeSummaries();
 }
 
 
@@ -255,14 +260,14 @@ public List<EmployeeSummaryDTO> getAllSummaries() {
 
 @PostMapping("/register")
 public EmployeeDTO register(@RequestBody EmployeeDTO dto) {
-    return employeeService.register(dto);
+    return IEmployeeService.register(dto);
 }
 
 
 //çalışan silme request (postman)
 @DeleteMapping("/delete/{id}")
 public ResponseEntity<String> delete(@PathVariable String id) {
-    employeeService.delete(id);
+    IEmployeeService.delete(id);
     return ResponseEntity.ok("Employee with ID " + id + " has been successfully deleted.");
 }
 

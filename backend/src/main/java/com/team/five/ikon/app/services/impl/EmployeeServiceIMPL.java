@@ -94,8 +94,6 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
 
-
-
     private EmployeeDTO convertToDTO(Employee employee) {
         EmployeeDTO dto = new EmployeeDTO();
         BeanUtils.copyProperties(employee, dto);
@@ -114,7 +112,13 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
     /// ///TURAL 100-300 /////////////
 
-
+    /// Secilmis kisinin bilgilerini ceker ////
+    @Override
+    public EmployeeDTO getEmployeeById(String id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+        return convertToDTO(employee); // This is your method to map Employee -> EmployeeDTO
+    }
 
 
 
