@@ -22,5 +22,10 @@ public class LeaveRequestDTO {
     private LocalDate endDate;
     private String reason;
     private LeaveStatus status;
+
     private long days;
+
+    private String approvedByFirstName;
+    private String approvedByLastName;
+
 }

@@ -1,8 +1,10 @@
 package com.team.five.ikon.app.services.impl;
 
 import com.team.five.ikon.app.dto.LeaveRequestDTO;
+import com.team.five.ikon.app.entity.Employee;
 import com.team.five.ikon.app.entity.LeaveRequest;
 import com.team.five.ikon.app.enums.LeaveStatus;
+import com.team.five.ikon.app.repository.EmployeeRepository;
 import com.team.five.ikon.app.repository.LeaveRequestRepository;
 import com.team.five.ikon.app.services.ILeaveRequestService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class LeaveRequestServiceIMPL implements ILeaveRequestService {
 
     private final LeaveRequestRepository repository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public List<LeaveRequestDTO> getAll() {
@@ -25,12 +28,12 @@ public class LeaveRequestServiceIMPL implements ILeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestDTO> getByStatus(String status) {
+    public List<LeaveRequestDTO> getByStatus(LeaveStatus status) {
         return repository.findByStatus(status).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<LeaveRequestDTO> getByEmployeeIdAndStatus(String employeeId, String status) {
+    public List<LeaveRequestDTO> getByEmployeeIdAndStatus(String employeeId, LeaveStatus status) {
         return repository.findByEmployeeIdAndStatus(employeeId, status).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
@@ -83,6 +86,27 @@ public class LeaveRequestServiceIMPL implements ILeaveRequestService {
         BeanUtils.copyProperties(saved, response);
         return response;
     }
+
+
+    @Override
+    public LeaveRequestDTO updateLeaveStatus(String leaveId, LeaveStatus status, String approverId) {
+        LeaveRequest leave = repository.findById(leaveId)
+                .orElseThrow(() -> new RuntimeException("Leave request not found"));
+
+        // Onaylayan çalışanın bilgilerini çek
+        Employee approver = employeeRepository.findById(approverId)
+                .orElseThrow(() -> new RuntimeException("Approver employee not found"));
+
+        leave.setStatus(status);
+        leave.setApprovedByFirstName(approver.getFirstName());
+        leave.setApprovedByLastName(approver.getLastName());
+
+        LeaveRequest updated = repository.save(leave);
+        LeaveRequestDTO dto = new LeaveRequestDTO();
+        BeanUtils.copyProperties(updated, dto);
+        return dto;
+    }
+
 
 
 
