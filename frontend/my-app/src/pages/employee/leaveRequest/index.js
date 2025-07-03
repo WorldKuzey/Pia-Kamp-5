@@ -1,3 +1,4 @@
+// pages/employee/leaveRequest/index.js
 import React from "react";
 import LeaveForm from "./leaveForm";
 import AppLayout from "../../../components/layout/AppLayout";

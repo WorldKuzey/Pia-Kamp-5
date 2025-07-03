@@ -1,3 +1,4 @@
+// pages/employee/leaveRequest/useLeaveRequest.js
 import { useState } from "react";
 import axios from "axios";
 
@@ -6,41 +7,32 @@ const useLeaveRequest = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const createLeaveRequest = async (data) => {
+  const submitLeave = async (formData) => {
     setLoading(true);
     setError("");
     setSuccess(false);
 
+    const userId = localStorage.getItem("userId");
+
+    const payload = {
+      employeeId: userId,
+      leaveType: formData.leaveType,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      reason: formData.reason,
+    };
+
     try {
-      const userId = localStorage.getItem("userId"); // Kullanıcı ID’si localStorage’dan
-
-      if (!userId) {
-        setError("Kullanıcı ID bulunamadı.");
-        setLoading(false);
-        return;
-      }
-
-      // Backend’in beklediği DTO’ya uygun nesne
-      const payload = {
-        employeeId: userId,
-        leaveType: data.leaveType,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        reason: data.reason,
-        // status backend tarafından otomatik atanabilir
-      };
-
       await axios.post("/api/leaves", payload);
-
       setSuccess(true);
     } catch (err) {
-      setError("İzin talebi oluşturulamadı.");
+      setError("İzin talebi gönderilirken bir hata oluştu.");
     } finally {
       setLoading(false);
     }
   };
 
-  return { createLeaveRequest, loading, error, success };
+  return { submitLeave, loading, error, success };
 };
 
 export default useLeaveRequest;

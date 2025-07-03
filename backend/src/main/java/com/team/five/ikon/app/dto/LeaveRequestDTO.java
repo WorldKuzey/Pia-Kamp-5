@@ -29,3 +29,8 @@ public class LeaveRequestDTO {
     private String approvedByLastName;
 
 }
+
+
+// İZİN TÜRÜ ENUMDAKİ KARŞILIĞI VERİCEZ 
+//START DATE END DATE 
+//REASON

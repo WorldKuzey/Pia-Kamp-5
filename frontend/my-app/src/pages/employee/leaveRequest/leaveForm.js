@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import useLeaveRequest from "./useLeaveRequest";
 
 const LeaveForm = () => {
-  const { createLeaveRequest, loading, error, success } = useLeaveRequest();
-
   const [formData, setFormData] = useState({
     leaveType: "",
     startDate: "",
@@ -11,94 +9,120 @@ const LeaveForm = () => {
     reason: "",
   });
 
+  const { submitLeave, loading, error, success } = useLeaveRequest();
+  const [validationError, setValidationError] = useState("");
+
+  const formRef = useRef(); // native form referansı
+
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setValidationError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation basit
-    if (!formData.leaveType || !formData.startDate || !formData.endDate) {
-      alert("Lütfen tüm zorunlu alanları doldurun.");
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
+
+    if (start > end) {
+      setValidationError("Başlangıç tarihi, bitiş tarihinden önce olmalıdır.");
       return;
     }
 
-    createLeaveRequest(formData);
+    const result = await submitLeave(formData);
+
+    if (result) {
+      // ✅ Hem React state'i hem native form'u sıfırla
+      setFormData({
+        leaveType: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
+      });
+
+      formRef.current.reset(); // <form> elementini temizler
+    }
   };
 
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
-      className="max-w-md bg-white p-6 rounded shadow space-y-4"
+      className="space-y-4 bg-white p-6 rounded shadow-md max-w-xl"
     >
       <div>
-        <label className="block font-semibold mb-1">İzin Türü *</label>
+        <label className="block font-medium text-gray-700">İzin Türü</label>
         <select
           name="leaveType"
           value={formData.leaveType}
           onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-3 py-2"
           required
+          className="w-full border px-3 py-2 rounded"
         >
           <option value="">Seçiniz</option>
-          <option value="ANNUAL">Yıllık İzin</option>
-          <option value="SICK">Hastalık İzni</option>
-          <option value="UNPAID">Ücretsiz İzin</option>
-          {/* Backendde LeaveType enumuna göre ekle */}
+          <option value="FATHER_LEAVE">Babalık İzni</option>
+          <option value="MARRIAGE_LEAVE">Evlilik İzni</option>
+          <option value="ANNUAL_LEAVE">Yıllık İzin</option>
+          <option value="SICK_LEAVE">Hastalık İzni</option>
         </select>
       </div>
 
       <div>
-        <label className="block font-semibold mb-1">Başlangıç Tarihi *</label>
+        <label className="block font-medium text-gray-700">
+          Başlangıç Tarihi
+        </label>
         <input
           type="date"
           name="startDate"
           value={formData.startDate}
           onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-3 py-2"
           required
+          className="w-full border px-3 py-2 rounded"
         />
       </div>
 
       <div>
-        <label className="block font-semibold mb-1">Bitiş Tarihi *</label>
+        <label className="block font-medium text-gray-700">Bitiş Tarihi</label>
         <input
           type="date"
           name="endDate"
           value={formData.endDate}
           onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-3 py-2"
           required
+          className="w-full border px-3 py-2 rounded"
         />
       </div>
 
       <div>
-        <label className="block font-semibold mb-1">Açıklama</label>
+        <label className="block font-medium text-gray-700">Açıklama</label>
         <textarea
           name="reason"
           value={formData.reason}
           onChange={handleChange}
-          rows={4}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          rows="3"
+          className="w-full border px-3 py-2 rounded"
         />
       </div>
-
-      {error && <p className="text-red-600">{error}</p>}
-      {success && (
-        <p className="text-green-600">İzin talebi başarıyla oluşturuldu!</p>
-      )}
 
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
         {loading ? "Gönderiliyor..." : "İzin Talebi Gönder"}
       </button>
+
+      {validationError && (
+        <p className="text-red-600 mt-2">{validationError}</p>
+      )}
+      {success && (
+        <p className="text-green-600 mt-2">
+          İzin talebiniz başarıyla gönderildi.
+        </p>
+      )}
+      {error && <p className="text-red-600 mt-2">{error}</p>}
     </form>
   );
 };
