@@ -1,5 +1,6 @@
 package com.team.five.ikon.app.entity;
 
+import com.team.five.ikon.app.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,10 @@ public class Employee {
     private String phone;
     private String role;
     private String password;
+    private Gender gender;
+    private long tc;
+    private short salary;
+    private String address;
+
+
 }
