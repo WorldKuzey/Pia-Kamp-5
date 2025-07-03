@@ -30,10 +30,6 @@ public class EmployeeController {
         return employeeService.create(dto);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        employeeService.delete(id);
-    }
 
 
     @PostMapping("/login")
@@ -263,10 +259,12 @@ public EmployeeDTO register(@RequestBody EmployeeDTO dto) {
 }
 
 
-
-
-
-
+//çalışan silme request (postman)
+@DeleteMapping("/delete/{id}")
+public ResponseEntity<String> delete(@PathVariable String id) {
+    employeeService.delete(id);
+    return ResponseEntity.ok("Employee with ID " + id + " has been successfully deleted.");
+}
 
 
 /// / DSKDSKDSKDSK

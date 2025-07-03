@@ -34,10 +34,13 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         return convertToDTO(employeeRepository.save(employee));
     }
 
+    /*
     @Override
     public void delete(String id) {
         employeeRepository.deleteById(id);
     }
+
+     */
 
 
     /*
@@ -528,6 +531,12 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         return convertToDTO(emp_saved);
     }
 
+    //silinmek istenen user yoksa uyarı methodu (postman body message uyarısı)
+    public void delete(String id) {
+        Employee emp = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+        employeeRepository.delete(emp);
+    }
 
 
 
