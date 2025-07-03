@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "employees")
 @Data
 
@@ -27,6 +29,8 @@ public class Employee {
     private long tc;
     private short salary;
     private String address;
+    private Date date_of_birth;
+    private short age;
 
 
 }

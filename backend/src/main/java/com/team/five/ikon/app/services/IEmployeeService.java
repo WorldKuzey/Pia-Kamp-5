@@ -41,6 +41,8 @@ public interface IEmployeeService {
 
     /// ////ENES 40-60////////////,
     List<EmployeeSummaryDTO> getAllEmployeeSummaries();// Tüm çalışanları listeler
+    List<EmployeeSummaryDTO> filterEmployees(String gender, String department, String role, String title);
+
 
 
 

@@ -3,6 +3,8 @@ package com.team.five.ikon.app.dto;
 import com.team.five.ikon.app.enums.Gender;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class EmployeeDTO {
     private String id;
@@ -18,5 +20,8 @@ public class EmployeeDTO {
     private long tc;
     private short salary;
     private String address;
+    private Date date_of_birth;
+    private short age;
+
 
 }

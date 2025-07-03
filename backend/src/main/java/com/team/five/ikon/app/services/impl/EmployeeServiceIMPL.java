@@ -416,6 +416,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
 
 
+
+
     /// /// BILGE 500+ ////////////////
 
 
@@ -552,6 +554,23 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         Employee saved_employee = employeeRepository.save(existing);
         return convertToDTO(saved_employee);
     }
+
+
+    @Override
+    public List<EmployeeSummaryDTO> filterEmployees(String gender, String department, String role, String title) {
+        return employeeRepository.findAll().stream()
+                .filter(emp -> gender == null || emp.getGender().name().equalsIgnoreCase(gender))
+                .filter(emp -> department == null || emp.getDepartment().equalsIgnoreCase(department))
+                .filter(emp -> role == null || emp.getRole().equalsIgnoreCase(role))
+                .filter(emp -> title == null || emp.getTitle().equalsIgnoreCase(title))
+                .map(emp -> {
+                    EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
+                    BeanUtils.copyProperties(emp, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
 
 
