@@ -1,4 +1,7 @@
-import { LogOut } from "lucide-react"; // ikonu buradan alıyoruz
+import React from "react";
+import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout"; // Material UI logout ikonu
+import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -12,13 +15,16 @@ const LogoutButton = () => {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className="flex items-center gap-2 px-3 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 transition text-sm font-medium"
-    >
-      <LogOut size={18} /> {/* ← ikon boyutu */}
-      Çıkış Yap
-    </button>
+    <Tooltip title="Çıkış Yap">
+      <IconButton
+        onClick={handleLogout}
+        color="error" // kırmızı renk
+        aria-label="Çıkış Yap"
+        size="small"
+      >
+        <LogoutIcon fontSize="small" />
+      </IconButton>
+    </Tooltip>
   );
 };
 

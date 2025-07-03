@@ -1,21 +1,57 @@
 import React from "react";
 import { useAuth } from "../../context/AuthContext.js";
-import LogoutButton from "../common/LogoutButton.js"; // yoluna göre değiştir
+import LogoutButton from "../common/LogoutButton.js";
+
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const Header = () => {
   const { email } = useAuth();
 
   return (
-    <header className="bg-white border-b p-4 shadow-sm flex items-center justify-between">
-      <h1 className="text-xl font-bold text-gray-700">İK Portalı</h1>
+    <AppBar
+      position="static"
+      color="default"
+      elevation={1}
+      sx={{ borderBottom: "1px solid #e0e0e0" }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          px: { xs: 2, sm: 3, md: 4 },
+          py: { xs: 1, sm: 1.5 },
+        }}
+      >
+        <Typography
+          variant="h6"
+          component="h1"
+          color="textPrimary"
+          fontWeight="bold"
+          sx={{ userSelect: "none" }}
+        >
+          İK Portalı
+        </Typography>
 
-      <div className="flex items-center gap-4">
-        <span className="text-gray-600 text-sm">
-          Merhaba, <strong>{email || "Kullanıcı"}</strong>
-        </span>
-        <LogoutButton />
-      </div>
-    </header>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            color: "text.secondary",
+            userSelect: "none",
+          }}
+          aria-label="Kullanıcı bilgisi ve çıkış butonu"
+        >
+          <Typography variant="body2" color="textSecondary">
+            Merhaba, <strong>{email || "Kullanıcı"}</strong>
+          </Typography>
+          <LogoutButton />
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 

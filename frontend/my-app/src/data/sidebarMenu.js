@@ -1,39 +1,55 @@
 // src/data/sidebarMenus.js
-import {
-  Home,
-  Users,
-  UserPlus,
-  UserCircle,
-  CalendarDays,
-  CalendarPlus,
-} from "lucide-react";
+import React from "react";
+
+import HomeIcon from "@mui/icons-material/Home";
+import PeopleIcon from "@mui/icons-material/People";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 export const HR_MENU = [
-  { label: "Ana Sayfa", path: "/hr/mainpage", icon: <Home size={18} /> },
-  { label: "Çalışanlar", path: "/hr/employees", icon: <Users size={18} /> },
+  {
+    label: "Ana Sayfa",
+    path: "/hr/mainpage",
+    icon: <HomeIcon fontSize="small" />,
+  },
+  {
+    label: "Çalışanlar",
+    path: "/hr/employees",
+    icon: <PeopleIcon fontSize="small" />,
+  },
   {
     label: "Çalışan Ekle",
     path: "/hr/add-employee",
-    icon: <UserPlus size={18} />,
+    icon: <PersonAddIcon fontSize="small" />,
   },
-  { label: "Profilim", path: "/hr/profile", icon: <UserCircle size={18} /> },
+  {
+    label: "Profilim",
+    path: "/hr/profile",
+    icon: <AccountCircleIcon fontSize="small" />,
+  },
 ];
 
 export const EMPLOYEE_MENU = [
-  { label: "Ana Sayfa", path: "/employee/mainpage", icon: <Home size={18} /> },
+  {
+    label: "Ana Sayfa",
+    path: "/employee/mainpage",
+    icon: <HomeIcon fontSize="small" />,
+  },
   {
     label: "İzinler",
     path: "/employee/leaves",
-    icon: <CalendarDays size={18} />,
+    icon: <EventAvailableIcon fontSize="small" />,
   },
   {
     label: "İzin Ekle",
     path: "/employee/leave-request",
-    icon: <CalendarPlus size={18} />,
+    icon: <EventNoteIcon fontSize="small" />,
   },
   {
     label: "Profilim",
     path: "/employee/profile",
-    icon: <UserCircle size={18} />,
+    icon: <AccountCircleIcon fontSize="small" />,
   },
 ];
