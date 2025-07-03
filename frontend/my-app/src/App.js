@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/login/index.js";
-import HRMainPage from "./pages/hr/mainPage/index.js";
-import EmployeeMainPage from "./pages/employee/mainPage/index.js";
+import LoginPage from "./pages/login";
+import HRMainPage from "./pages/hr/mainPage";
+import EmployeeMainPage from "./pages/employee/mainPage";
 import EmployeePage from "./pages/hr/employee";
-import ProfilePage from "./pages/hr/profile"; // profile sayfası
-import ProtectedRoute from "./components/routing/ProtectedRoute.js";
+import ProfilePage from "./pages/hr/profile";
+import LeavePage from "./pages/employee/leaves";
+import LeaveRequestPage from "./pages/employee/leaveRequest";
+import ProtectedRoute from "./components/routing/ProtectedRoute";
 
 function App() {
   return (
@@ -44,6 +46,24 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["HR", "employee"]}>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employee/leaves"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <LeavePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employee/leave-request" // izin talebi oluşturma sayfası
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <LeaveRequestPage />
             </ProtectedRoute>
           }
         />

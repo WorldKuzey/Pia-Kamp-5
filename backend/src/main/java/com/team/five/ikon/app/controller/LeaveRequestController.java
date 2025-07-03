@@ -21,7 +21,7 @@ public class LeaveRequestController {
     public LeaveRequestDTO create(@RequestBody LeaveRequestDTO dto) {
         return ILeaveRequestService.createLeaveRequest(dto);
     }
-
+    
     //İzini id ye göre çekme
     @GetMapping("/{id}")
     public LeaveRequestDTO getById(@PathVariable String id) {
