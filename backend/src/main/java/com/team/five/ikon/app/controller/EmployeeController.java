@@ -255,6 +255,14 @@ public List<EmployeeSummaryDTO> getAllSummaries() {
 
 //////////////////////////////////////// BILGE 250-350////////////////////////////////////////////////////////////
 
+//yeni çalışan ekleme request (postman)
+
+@PostMapping("/register")
+public EmployeeDTO register(@RequestBody EmployeeDTO dto) {
+    return employeeService.register(dto);
+}
+
+
 
 
 

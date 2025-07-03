@@ -39,6 +39,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         employeeRepository.deleteById(id);
     }
 
+
+    /*
     @Override
     public EmployeeDTO register(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
@@ -57,6 +59,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
         return convertToDTO(saved);
     }
+
+    */
 
     @Override
     public EmployeeDTO login(LoginRequestDTO loginRequest) {
@@ -319,6 +323,213 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
 
     /// /// BILGE 500+ ////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /// /// BILGE 500+ ////////////////
+
+
+    //İnsan kaynakları yeni çalışan ekleme methodu
+
+    @Override
+    public EmployeeDTO register(EmployeeDTO dto) {
+
+        Employee employee = new Employee();
+
+        if (employeeRepository.findByEmail(dto.getEmail()) != null) {
+            throw new RuntimeException("Email already exists");
+        }
+        employee.setFirstName(dto.getFirstName());
+        employee.setLastName(dto.getLastName());
+        employee.setEmail(dto.getEmail());
+        employee.setDepartment(dto.getDepartment());
+        employee.setTitle(dto.getTitle());
+        employee.setPhone(dto.getPhone());
+        employee.setPassword(passwordEncoder.encode(dto.getPassword()));
+        //employee.setRole(dto.getRole());
+        employee.setRole("employee");
+        Employee emp_saved = employeeRepository.save(employee);
+        return convertToDTO(emp_saved);
+    }
+
+
+
 
 
 
