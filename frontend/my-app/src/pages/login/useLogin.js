@@ -15,7 +15,7 @@ const useLogin = () => {
       const user = res.data; // { name, email, role }
       loginUser(user); // context'e set et
 
-      navigate(user.role === "HR" ? "/hr-mainpage" : "/employee-mainpage");
+      navigate(user.role === "HR" ? "/hr/mainpage" : "/employee/mainpage");
     } catch (err) {
       alert("Login failed: " + (err.response?.data?.message || err.message));
     }

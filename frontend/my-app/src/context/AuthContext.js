@@ -3,29 +3,34 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState(null);
   const [role, setRole] = useState(null);
 
-  // Uygulama açıldığında sadece role’i localStorage’tan al
+  // Sayfa yüklendiğinde localStorage'dan email ve role bilgilerini al
   useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
     const savedRole = localStorage.getItem("role");
+
+    if (savedEmail) setEmail(savedEmail);
     if (savedRole) setRole(savedRole);
   }, []);
 
-  const loginUser = (userData) => {
-    setUser(userData); // sadece context'e
-    setRole(userData.role);
-    localStorage.setItem("role", userData.role); // sadece role yaz
+  const loginUser = ({ email, role }) => {
+    setEmail(email);
+    setRole(role);
+    localStorage.setItem("email", email);
+    localStorage.setItem("role", role);
   };
 
   const logoutUser = () => {
-    setUser(null);
+    setEmail(null);
     setRole(null);
-    localStorage.removeItem("role"); // sadece role sil
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ email, role, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

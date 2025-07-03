@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
 
         <Route
-          path="/hr-mainpage"
+          path="/hr/mainpage"
           element={
             <ProtectedRoute allowedRoles={["HR"]}>
               <HRMainPage />
@@ -20,7 +20,7 @@ function App() {
         />
 
         <Route
-          path="/employee-mainpage"
+          path="/employee/mainpage"
           element={
             <ProtectedRoute allowedRoles={["employee"]}>
               <EmployeeMainPage />
