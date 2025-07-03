@@ -7,6 +7,8 @@ import ProfilePage from "./pages/hr/profile";
 import LeavePage from "./pages/employee/leaves";
 import LeaveRequestPage from "./pages/employee/leaveRequest";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
+import HRAddEmp from "./pages/hr/add-employee/index.js";
+
 
 function App() {
   return (
@@ -22,6 +24,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+          <Route
+              path="/hr/add-employee"
+              element={
+                  <ProtectedRoute allowedRoles={["HR"]}>
+                      <HRAddEmp />
+                  </ProtectedRoute>
+              }
+          />
 
         <Route
           path="/employee/mainpage"
