@@ -22,7 +22,4 @@ public class Employee {
     private String phone;
     private String role;
     private String password;
-
-
-
 }
