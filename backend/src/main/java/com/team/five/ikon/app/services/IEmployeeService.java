@@ -62,4 +62,8 @@ public interface IEmployeeService {
     /// ////////////BILGE 60+////////////////
 
 
+    EmployeeDTO updateEmployee(String id, EmployeeDTO dto);
+
+
+
 }

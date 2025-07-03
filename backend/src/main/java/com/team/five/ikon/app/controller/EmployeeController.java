@@ -50,11 +50,6 @@ public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requ
 }
 
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable String id) {
-        EmployeeDTO employee = IEmployeeService.getEmployeeById(id);
-        return ResponseEntity.ok(employee);
-    }
 
 
 
@@ -270,6 +265,18 @@ public ResponseEntity<String> delete(@PathVariable String id) {
     IEmployeeService.delete(id);
     return ResponseEntity.ok("Employee with ID " + id + " has been successfully deleted.");
 }
+
+
+//çalışan bilgilerini güncelleme request (postman)
+
+@PatchMapping("/update_employee/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(
+            @PathVariable String id,
+            @RequestBody EmployeeDTO dto) {
+
+        EmployeeDTO updated_employee = IEmployeeService.updateEmployee(id, dto);
+        return ResponseEntity.ok(updated_employee);
+    }
 
 
 /// / DSKDSKDSKDSK
