@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {useEffect} from "react";
 import useSeeLeaves from "./useSeeLeaves";
 
@@ -12,9 +12,9 @@ const SeeLeavesForm = () => {
     useEffect(() => {
         fetchLeaves();
     }, []);
-    const handleUpdateStatus = (id, newStatus, approverId) => {
-        changeLeaveStatus(id, newStatus, approverId);
-        fetchLeaves();
+    const handleUpdateStatus = async(id, newStatus, approverId) => {
+        await changeLeaveStatus(id, newStatus, approverId);
+        await fetchLeaves();
     };
 
 
