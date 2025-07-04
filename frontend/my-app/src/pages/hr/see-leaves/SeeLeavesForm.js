@@ -2,11 +2,23 @@ import React, { useState } from "react";
 import {useEffect} from "react";
 import useSeeLeaves from "./useSeeLeaves";
 
+
 const SeeLeavesForm = () => {
-    const { leaves, fetchLeaves } = useSeeLeaves();
+    const {leaves, fetchLeaves, changeLeaveStatus} = useSeeLeaves();
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+        console.error("ID bulunamadı. localStorage'da kayıtlı olmayabilir.");
+    }
     useEffect(() => {
         fetchLeaves();
     }, []);
+    const handleUpdateStatus = (id, newStatus, approverId) => {
+        changeLeaveStatus(id, newStatus, approverId);
+        fetchLeaves();
+    };
+
+
+
 
 
     return(
@@ -16,17 +28,23 @@ const SeeLeavesForm = () => {
                 <table className="min-w-full border border-gray-300">
                     <thead className="bg-gray-100">
                     <tr>
+                        <th className="px-4 py-2 border">Kişi Adı</th>
+                        <th className="px-4 py-2 border">Kişi Soyadı</th>
                         <th className="px-4 py-2 border">İzin Türü</th>
                         <th className="px-4 py-2 border">Başlangıç Tarihi</th>
                         <th className="px-4 py-2 border">Bitiş Tarihi</th>
                         <th className="px-4 py-2 border">Gün Sayısı</th>
                         <th className="px-4 py-2 border">Durum</th>
                         <th className="px-4 py-2 border">Açıklama</th>
+                        <th className="px-4 py-2 border">İşlem Yap</th>
+                        <th className="px-4 py-2 border">İşlem Yapan Kişi</th>
                     </tr>
                     </thead>
                     <tbody>
                     {leaves.map((leave) => (
                         <tr key={leave.id} className="text-center">
+                            <td className="border px-4 py-2">{leave.employeeFirstName}</td>
+                            <td className="border px-4 py-2">{leave.employeeLastName}</td>
                             <td className="border px-4 py-2">{leave.leaveType}</td>
                             <td className="border px-4 py-2">{leave.startDate}</td>
                             <td className="border px-4 py-2">{leave.endDate}</td>
@@ -45,6 +63,25 @@ const SeeLeavesForm = () => {
                                </span>
                             </td>
                             <td className="border px-4 py-2">{leave.reason}</td>
+                            <td className="border px-4 py-2 space-x-2">
+                                {leave.status === "PENDING" && (
+                                    <>
+                                        <button
+                                            onClick={() => handleUpdateStatus(leave.id, "APPROVED", userId)}
+                                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                                        >
+                                            Onayla
+                                        </button>
+                                        <button
+                                            onClick={() => handleUpdateStatus(leave.id, "REJECTED", userId)}
+                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600  mt-2"
+                                        >
+                                            Reddet
+                                        </button>
+                                    </>
+                                )}
+                            </td>
+                            <td className="border px-4 py-2">{leave.approvedByFirstName}</td>
                         </tr>
                     ))}
                     </tbody>
