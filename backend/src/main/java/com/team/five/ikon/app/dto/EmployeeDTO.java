@@ -2,11 +2,15 @@ package com.team.five.ikon.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.five.ikon.app.enums.Gender;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDTO {
     private String id;
     private String firstName;
@@ -21,6 +25,7 @@ public class EmployeeDTO {
     private long tc;
     private long salary;
     private String address;
+    private String imageUrl;
 
 
 

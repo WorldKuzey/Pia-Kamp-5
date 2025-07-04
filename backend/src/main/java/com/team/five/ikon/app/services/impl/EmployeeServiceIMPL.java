@@ -12,13 +12,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -593,7 +600,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     //İnsan kaynakları yeni çalışan ekleme methodu
 
     @Override
-    public EmployeeDTO register(EmployeeDTO dto) {
+    public EmployeeDTO register(EmployeeDTO dto, MultipartFile imageFile) throws IOException {
 
         Employee employee = new Employee();
 
@@ -609,26 +616,51 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         employee.setPassword(passwordEncoder.encode(dto.getPassword()));
         //employee.setRole(dto.getRole());
         employee.setRole("employee");
-        //yeni eklenen özellikler
+
+        /////yeni eklenen özellikler
 
         employee.setGender(dto.getGender());
         employee.setTc(dto.getTc());
         employee.setSalary(dto.getSalary());
         employee.setAddress(dto.getAddress());
         employee.setDate_of_birth(dto.getDate_of_birth());
+        employee.setImageUrl(dto.getImageUrl());
+
+        ///// Handle file upload
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Define folder location for storing files (adjust path as needed)
+            String uploadDir = "uploads/employee-images/";
+            String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+
+            // Save the file locally
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(filename);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Set imageUrl relative or full path to employee
+            employee.setImageUrl("/" + uploadDir + filename);
+        } else {
+            employee.setImageUrl(null);
+        }
 
 
-        // doğum yılı ve yaşı utility (yardımcı) methodları kullanarak oluşturma
+
+        ///// doğum yılı ve yaşı utility (yardımcı) methodları kullanarak oluşturma
 
         // LocalDate ile hesaplamalar:
         LocalDate birthDate = dto.getDate_of_birth();
         employee.setBirth_year(calculateBirthYear(birthDate));
         employee.setAge(calculateAge(birthDate));
 
-
         Employee emp_saved = employeeRepository.save(employee);
         return convertToDTO(emp_saved);
     }
+
+
 
 
 
@@ -650,6 +682,28 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         LocalDate today = LocalDate.now();
         return (short) Period.between(birthDate, today).getYears();
     }
+
+
+    //upload image methodu:
+
+    /*private String uploadImage(MultipartFile file) {
+        try {
+            String uploadDir = "uploads/";
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + fileName);
+
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, file.getBytes());
+
+            return "http://localhost:5000/uploads/" + fileName;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
+    }
+
+     */
+
 
 
     //silinmek istenen user yoksa uyarı methodu (postman body message uyarısı)

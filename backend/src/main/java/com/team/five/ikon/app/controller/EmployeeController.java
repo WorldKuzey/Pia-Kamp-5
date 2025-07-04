@@ -8,6 +8,7 @@ import com.team.five.ikon.app.enums.Gender;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -295,10 +296,24 @@ public List<EmployeeSummaryDTO> filterEmployees(
 
 //yeni çalışan ekleme request (postman)
 
+/*
 @PostMapping("/register")
 public EmployeeDTO register(@RequestBody EmployeeDTO dto) {
     return IEmployeeService.register(dto);
 }
+
+
+ */
+
+
+@PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public EmployeeDTO register(
+        @RequestPart("employee") EmployeeDTO dto,
+        @RequestPart(value = "image", required = false) MultipartFile imageFile) throws IOException {
+    return IEmployeeService.register(dto, imageFile);
+}
+
+
 
 
 //çalışan silme request (postman)

@@ -5,14 +5,16 @@ import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 import com.team.five.ikon.app.enums.Gender;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IEmployeeService {
     List<EmployeeDTO> getAllEmployees();
     EmployeeDTO create(EmployeeDTO dto);
     void delete(String id);
-    EmployeeDTO register(EmployeeDTO dto);
+    //EmployeeDTO register(EmployeeDTO dto);
     EmployeeDTO login(LoginRequestDTO loginRequest);
     EmployeeDTO HR_register(RegisterRequestDTO requestDTO);
 
@@ -22,7 +24,7 @@ public interface IEmployeeService {
     /// /// Tural 20-40//////
 
     EmployeeDTO getEmployeeById(String id);
-
+    EmployeeDTO register(EmployeeDTO dto, MultipartFile file) throws IOException;
 
 
 

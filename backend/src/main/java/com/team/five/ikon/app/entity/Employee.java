@@ -34,6 +34,9 @@ public class Employee {
     private LocalDate date_of_birth;  // burayı Date'den LocalDate'e değiştirdik
     private short age;
     private short birth_year;
+    private String imageUrl;
+
+
 
 
 }
