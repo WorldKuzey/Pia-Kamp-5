@@ -5,6 +5,7 @@ import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 import com.team.five.ikon.app.entity.Employee;
+import com.team.five.ikon.app.enums.Gender;
 import com.team.five.ikon.app.repository.EmployeeRepository;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -192,15 +193,38 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     //employee'nin istenen özelliklerini update etme methodu
 
     /// /////////ENES 300- 500///////
+
     @Override
     public List<EmployeeSummaryDTO> getAllEmployeeSummaries() {
         return employeeRepository.findAll().stream().map(employee -> {
             EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
             dto.setFirstName(employee.getFirstName());
             dto.setLastName(employee.getLastName());
-            dto.setRole(employee.getRole());
+            dto.setDepartment(employee.getDepartment());
+            dto.setTitle(employee.getTitle());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public List<EmployeeSummaryDTO> filterEmployees(Gender gender, String department, String role, String title) {
+        return employeeRepository.findAll().stream()
+                .filter(emp -> gender == null || (emp.getGender() != null && emp.getGender().equals(gender)))
+                .filter(emp -> department == null || emp.getDepartment().equalsIgnoreCase(department))
+                .filter(emp -> role == null || emp.getRole().equalsIgnoreCase(role))
+                .filter(emp -> title == null || emp.getTitle().equalsIgnoreCase(title))
+                .map(emp -> {
+                    EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
+                    dto.setFirstName(emp.getFirstName());
+                    dto.setLastName(emp.getLastName());
+                    dto.setDepartment(emp.getDepartment());
+                    dto.setTitle(emp.getTitle());
+                    dto.setGender(emp.getGender());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 
@@ -560,20 +584,6 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
 
-    @Override
-    public List<EmployeeSummaryDTO> filterEmployees(String gender, String department, String role, String title) {
-        return employeeRepository.findAll().stream()
-                .filter(emp -> gender == null || emp.getGender().name().equalsIgnoreCase(gender))
-                .filter(emp -> department == null || emp.getDepartment().equalsIgnoreCase(department))
-                .filter(emp -> role == null || emp.getRole().equalsIgnoreCase(role))
-                .filter(emp -> title == null || emp.getTitle().equalsIgnoreCase(title))
-                .map(emp -> {
-                    EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
-                    BeanUtils.copyProperties(emp, dto);
-                    return dto;
-                })
-                .collect(Collectors.toList());
-    }
 
 
 

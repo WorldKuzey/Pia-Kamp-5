@@ -4,6 +4,7 @@ import com.team.five.ikon.app.dto.EmployeeDTO;
 import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
+import com.team.five.ikon.app.enums.Gender;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requ
 
 
 
-
+    //Çalışanı id ye göre çekme
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable String id) {
         EmployeeDTO employee = IEmployeeService.getEmployeeById(id);
@@ -181,15 +182,15 @@ public List<EmployeeSummaryDTO> getAllSummaries() {
     return IEmployeeService.getAllEmployeeSummaries();
 }
 
-    @GetMapping("/summaries/filter")
-    public List<EmployeeSummaryDTO> filterEmployees(
-            @RequestParam(required = false) String gender,
-            @RequestParam(required = false) String department,
-            @RequestParam(required = false) String role,
-            @RequestParam(required = false) String title
-    ) {
+@GetMapping("/summaries/filter")
+public List<EmployeeSummaryDTO> filterEmployees(
+        @RequestParam(required = false) Gender gender,
+        @RequestParam(required = false) String department,
+        @RequestParam(required = false) String role,
+        @RequestParam(required = false) String title
+        ) {
         return IEmployeeService.filterEmployees(gender, department, role, title);
-    }
+        }
 
 
 

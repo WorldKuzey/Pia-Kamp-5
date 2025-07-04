@@ -4,6 +4,7 @@ import com.team.five.ikon.app.dto.EmployeeDTO;
 import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
 import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
+import com.team.five.ikon.app.enums.Gender;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public interface IEmployeeService {
 
     /// ////ENES 40-60////////////,
     List<EmployeeSummaryDTO> getAllEmployeeSummaries();// Tüm çalışanları listeler
-    List<EmployeeSummaryDTO> filterEmployees(String gender, String department, String role, String title);
+    List<EmployeeSummaryDTO> filterEmployees(Gender gender, String department, String role, String title);
 
 
 
