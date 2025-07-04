@@ -1,5 +1,6 @@
 package com.team.five.ikon.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.five.ikon.app.enums.Gender;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class EmployeeDTO {
     private String password;
     private Gender gender;
     private long tc;
-    private short salary;
+    private long salary;
     private String address;
 
 
@@ -27,7 +28,7 @@ public class EmployeeDTO {
     Kullanıcı da arayüzde ters girse bile kaydederken bu şekilde girmeli ki yaşını hesaplama
     işlemi doğru çalışabilsin */
 
-
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date_of_birth;  // burayı Date'den LocalDate'e değiştirdik
     private short age;
     private short birth_year;

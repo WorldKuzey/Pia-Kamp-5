@@ -18,9 +18,9 @@ public class LeaveRequest {
     private String id;
     private String employeeId;
     private LeaveType leaveType;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;
     private String reason;
     private LeaveStatus status;

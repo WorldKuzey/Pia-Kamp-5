@@ -1,5 +1,6 @@
 package com.team.five.ikon.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.five.ikon.app.enums.Gender;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class EmployeeSummaryDTO {
     private long tc;
     private String title;
     private String email;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date date_of_birth;
     private short age;
 
