@@ -586,6 +586,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         if (dto.getTitle() != null) existing.setTitle(dto.getTitle());
         if (dto.getPhone() != null) existing.setPhone(dto.getPhone());
 
+
         Employee saved_employee = employeeRepository.save(existing);
         return convertToDTO(saved_employee);
     }
@@ -627,25 +628,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         employee.setImageUrl(dto.getImageUrl());
 
         ///// Handle file upload
-        if (imageFile != null && !imageFile.isEmpty()) {
-            // Define folder location for storing files (adjust path as needed)
-            String uploadDir = "uploads/employee-images/";
-            String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
 
-            // Save the file locally
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            Path filePath = uploadPath.resolve(filename);
-            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Set imageUrl relative or full path to employee
-            employee.setImageUrl("/" + uploadDir + filename);
-        } else {
-            employee.setImageUrl(null);
-        }
+        handleImageUpload(employee, imageFile);
 
 
 
@@ -684,25 +668,28 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
 
-    //upload image methodu:
+    ///upload image methodu:
 
-    /*private String uploadImage(MultipartFile file) {
-        try {
-            String uploadDir = "uploads/";
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir + fileName);
+    private void handleImageUpload(Employee employee, MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String uploadDir = "uploads/employee-images/";
+            String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
 
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, file.getBytes());
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
-            return "http://localhost:5000/uploads/" + fileName;
+            Path filePath = uploadPath.resolve(filename);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload image", e);
+            employee.setImageUrl("/" + uploadDir + filename);
+        } else {
+            employee.setImageUrl(null);
         }
     }
 
-     */
+
 
 
 
