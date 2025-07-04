@@ -6,10 +6,17 @@ import com.team.five.ikon.app.dto.LoginRequestDTO;
 import com.team.five.ikon.app.dto.RegisterRequestDTO;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -52,6 +59,29 @@ public ResponseEntity<EmployeeDTO> register(@RequestBody RegisterRequestDTO requ
 
 
 
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable String id) {
+        EmployeeDTO employee = IEmployeeService.getEmployeeById(id);
+        return ResponseEntity.ok(employee);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String uploadDir = "uploads/";
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + fileName);
+
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, file.getBytes());
+
+            String fileUrl = "http://localhost:5000/uploads/" + fileName;
+            return ResponseEntity.ok(fileUrl);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+        }
+    }
 
 
 
@@ -280,7 +310,7 @@ public ResponseEntity<String> delete(@PathVariable String id) {
 
 //çalışan bilgilerini güncelleme request (postman)
 
-@PatchMapping("/update_employee/{id}")
+    @PatchMapping("/update_employee/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(
             @PathVariable String id,
             @RequestBody EmployeeDTO dto) {
@@ -288,6 +318,7 @@ public ResponseEntity<String> delete(@PathVariable String id) {
         EmployeeDTO updated_employee = IEmployeeService.updateEmployee(id, dto);
         return ResponseEntity.ok(updated_employee);
     }
+
 
 
 /// / DSKDSKDSKDSK
