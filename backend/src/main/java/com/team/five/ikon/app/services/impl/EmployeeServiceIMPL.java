@@ -585,6 +585,11 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         if (dto.getDepartment() != null) existing.setDepartment(dto.getDepartment());
         if (dto.getTitle() != null) existing.setTitle(dto.getTitle());
         if (dto.getPhone() != null) existing.setPhone(dto.getPhone());
+        if (dto.getGender() != null) existing.setGender(dto.getGender());
+        if (dto.getTc() != 0) existing.setTc(dto.getTc());
+        if (dto.getSalary() != 0) existing.setSalary(dto.getSalary());
+        if (dto.getAddress() != null) existing.setAddress(dto.getAddress());
+
 
 
         Employee saved_employee = employeeRepository.save(existing);
