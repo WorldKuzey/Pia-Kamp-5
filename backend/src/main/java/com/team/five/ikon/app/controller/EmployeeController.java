@@ -1,9 +1,6 @@
 package com.team.five.ikon.app.controller;
 
-import com.team.five.ikon.app.dto.EmployeeDTO;
-import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
-import com.team.five.ikon.app.dto.LoginRequestDTO;
-import com.team.five.ikon.app.dto.RegisterRequestDTO;
+import com.team.five.ikon.app.dto.*;
 import com.team.five.ikon.app.enums.Gender;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -334,6 +331,18 @@ public ResponseEntity<String> delete(@PathVariable String id) {
         EmployeeDTO updated_employee = IEmployeeService.updateEmployee(id, dto);
         return ResponseEntity.ok(updated_employee);
     }
+
+// çalışanın kendi profilinde sadece şifresini update edebilmesi gerekiyor. bunu sağlayan method:
+
+    @PatchMapping("/update_password/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployeePassword(
+            @PathVariable String id,
+            @RequestBody UpdatePasswordRequestDTO request) {
+
+        EmployeeDTO updated = IEmployeeService.updatePasswordForEmployee(id, request);
+        return ResponseEntity.ok(updated);
+    }
+
 
 
 

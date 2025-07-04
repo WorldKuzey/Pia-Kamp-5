@@ -1,15 +1,14 @@
 package com.team.five.ikon.app.services.impl;
 
-import com.team.five.ikon.app.dto.EmployeeDTO;
-import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
-import com.team.five.ikon.app.dto.LoginRequestDTO;
-import com.team.five.ikon.app.dto.RegisterRequestDTO;
+import com.team.five.ikon.app.dto.*;
 import com.team.five.ikon.app.entity.Employee;
 import com.team.five.ikon.app.enums.Gender;
 import com.team.five.ikon.app.repository.EmployeeRepository;
 import com.team.five.ikon.app.services.IEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
@@ -711,5 +710,28 @@ public class EmployeeServiceIMPL implements IEmployeeService {
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
         employeeRepository.delete(emp);
     }
+
+    // çalışanın kendi profilinde sadece şifresini update edebilmesi için method:
+
+    @Override
+    public EmployeeDTO updatePasswordForEmployee(String id, UpdatePasswordRequestDTO request) {
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
+        existing.setPassword(passwordEncoder.encode(request.getPassword()));
+        Employee saved = employeeRepository.save(existing);
+
+        return convertToDTO(saved);
+    }
+
+
+
+
+
+
 
 }

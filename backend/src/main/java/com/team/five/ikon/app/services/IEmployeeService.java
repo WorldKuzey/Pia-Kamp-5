@@ -1,9 +1,6 @@
 package com.team.five.ikon.app.services;
 
-import com.team.five.ikon.app.dto.EmployeeDTO;
-import com.team.five.ikon.app.dto.EmployeeSummaryDTO;
-import com.team.five.ikon.app.dto.LoginRequestDTO;
-import com.team.five.ikon.app.dto.RegisterRequestDTO;
+import com.team.five.ikon.app.dto.*;
 import com.team.five.ikon.app.enums.Gender;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,6 +65,7 @@ public interface IEmployeeService {
 
 
     EmployeeDTO updateEmployee(String id, EmployeeDTO dto);
+    EmployeeDTO updatePasswordForEmployee(String id, UpdatePasswordRequestDTO request);
 
 
 
