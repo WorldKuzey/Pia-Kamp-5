@@ -616,7 +616,14 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         employee.setPhone(dto.getPhone());
         employee.setPassword(passwordEncoder.encode(dto.getPassword()));
         //employee.setRole(dto.getRole());
-        employee.setRole("employee");
+
+        String departmentName = "İnsan Kaynakları";
+
+        if (dto.getDepartment() != null && dto.getDepartment().trim().equalsIgnoreCase(departmentName)) {
+            employee.setRole("HR");
+        } else {
+            employee.setRole("employee");
+        }
 
         /////yeni eklenen özellikler
 
