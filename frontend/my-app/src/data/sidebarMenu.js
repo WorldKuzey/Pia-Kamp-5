@@ -7,6 +7,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import LeavesIcon from "@mui/icons-material/BubbleChart";
 
 export const HR_MENU = [
   {
@@ -23,6 +24,11 @@ export const HR_MENU = [
     label: "Çalışan Ekle",
     path: "/hr/add-employee",
     icon: <PersonAddIcon fontSize="small" />,
+  },
+  {
+    label: "Çalışan İzinleri",
+    path: "/hr/employees-leaves",
+    icon: <LeavesIcon fontSize="small" />,
   },
   {
     label: "Profilim",

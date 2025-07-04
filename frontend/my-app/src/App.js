@@ -8,7 +8,7 @@ import LeavePage from "./pages/employee/leaves";
 import LeaveRequestPage from "./pages/employee/leaveRequest";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import HRAddEmp from "./pages/hr/add-employee/index.js";
-
+import HRSeeLeaves from "./pages/hr/see-leaves/index.js";
 
 function App() {
   return (
@@ -25,14 +25,23 @@ function App() {
           }
         />
 
-          <Route
+        <Route
               path="/hr/add-employee"
               element={
                   <ProtectedRoute allowedRoles={["HR"]}>
                       <HRAddEmp />
                   </ProtectedRoute>
               }
-          />
+        />
+
+        <Route
+              path="/hr/employees-leaves"
+              element={
+                  <ProtectedRoute allowedRoles={["HR"]}>
+                      <HRSeeLeaves />
+                  </ProtectedRoute>
+              }
+        />
 
         <Route
           path="/employee/mainpage"
@@ -42,6 +51,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+          <Route
+              path="/employee/profile"
+              element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                      <ProfilePage />
+                  </ProtectedRoute>
+              }
+          />
 
         <Route
           path="/hr/employees"

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const useAddEmployee = () => {
     const addEmp= async ( firstName, lastName, department,title, phone,
-                          role, gender, tc, salary, address, birth,
+                          role, gender, tc, salary, address, date_of_birth,
                           email, password) => {
         try {
             const res = await axios.post("http://localhost:5000/api/employees/register", {
@@ -10,7 +10,7 @@ const useAddEmployee = () => {
                 department,
                 title,
                 phone,
-                role, gender, tc, salary, address, birth,
+                role, gender, tc, salary, address, date_of_birth,
                 email,
                 password,
             });
