@@ -91,21 +91,53 @@ public class LeaveRequestServiceIMPL implements ILeaveRequestService {
     @Override
     public LeaveRequestDTO updateLeaveStatus(String leaveId, LeaveStatus status, String approverId) {
         LeaveRequest leave = repository.findById(leaveId)
-                .orElseThrow(() -> new RuntimeException("Leave request not found"));
+                .orElseThrow(() -> new RuntimeException("İzin talebi bulunamadı."));
 
         // Onaylayan çalışanın bilgilerini çek
         Employee approver = employeeRepository.findById(approverId)
-                .orElseThrow(() -> new RuntimeException("Approver employee not found"));
+                .orElseThrow(() -> new RuntimeException("Onaylayan çalışan bulunamadı."));
+
+        // Rol kontrolü
+        if (!"HR".equalsIgnoreCase(approver.getRole())) {
+            throw new RuntimeException("Sadece İnsan Kaynakları (HR) izin talebini onaylayabilir veya reddedebilir.");
+        }
 
         leave.setStatus(status);
         leave.setApprovedByFirstName(approver.getFirstName());
         leave.setApprovedByLastName(approver.getLastName());
+
+        // Eğer izin onaylandıysa, çalışan bilgilerini bul ve kalan günleri azalt
+        if (status == LeaveStatus.APPROVED) {
+            Employee employee = employeeRepository.findById(leave.getEmployeeId())
+                    .orElseThrow(() -> new RuntimeException("İzin sahibi çalışan bulunamadı."));
+
+            long usedDays = leave.getDays(); // Kaç gün izin kullandıysa
+
+            switch (leave.getLeaveType()) {
+                case ANNUAL_LEAVE -> employee.setRemainingAnnualLeave(
+                        employee.getRemainingAnnualLeave() - (int) usedDays
+                );
+                case SICK_LEAVE -> employee.setRemainingSickLeave(
+                        employee.getRemainingSickLeave() - (int) usedDays
+                );
+                case FATHER_LEAVE -> employee.setRemainingFatherLeave(
+                        employee.getRemainingFatherLeave() - (int) usedDays
+                );
+                case MARRIAGE_LEAVE -> employee.setRemainingMarriageLeave(
+                        employee.getRemainingMarriageLeave() - (int) usedDays
+                );
+            }
+
+            employeeRepository.save(employee); // çalışan güncellenmiş haliyle kaydedilir
+        }
 
         LeaveRequest updated = repository.save(leave);
         LeaveRequestDTO dto = new LeaveRequestDTO();
         BeanUtils.copyProperties(updated, dto);
         return dto;
     }
+
+
 
 
 

@@ -2,6 +2,7 @@ package com.team.five.ikon.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.five.ikon.app.enums.Gender;
+import com.team.five.ikon.app.enums.LeaveType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,12 @@ public class Employee {
     private short age;
     private short birth_year;
     private String imageUrl;
+
+    // İzin türlerine göre kalan günler
+    private int remainingAnnualLeave = LeaveType.ANNUAL_LEAVE.getDefaultDays();
+    private int remainingSickLeave = LeaveType.SICK_LEAVE.getDefaultDays();
+    private int remainingMarriageLeave = LeaveType.MARRIAGE_LEAVE.getDefaultDays();
+    private int remainingFatherLeave = LeaveType.FATHER_LEAVE.getDefaultDays();
 
 
 
