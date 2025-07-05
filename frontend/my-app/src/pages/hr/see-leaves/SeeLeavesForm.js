@@ -27,6 +27,19 @@ const SeeLeavesForm = () => {
   const { leaves, fetchLeaves, changeLeaveStatus, setFilter, filter } =
     useSeeLeaves();
   const userId = localStorage.getItem("userId");
+  const leaveTypeMap = {
+    ANNUAL_LEAVE: "Yıllık İzin",
+    SICK_LEAVE: "Hastalık İzni",
+    MARRIAGE_LEAVE: "Evlilik İzni",
+    FATHER_LEAVE: "Babalık İzni"
+  };
+
+  const leaveStatusMap = {
+    APPROVED: "ONAYLANDI",
+    PENDING: "BEKLEMEDE",
+    REJECTED: "REDDEDİLDİ"
+  };
+
 
   // fetch, component mount olduğunda ve filtre değiştiğinde otomatik çağrılır
   useEffect(() => {
@@ -57,7 +70,7 @@ const SeeLeavesForm = () => {
           }
         >
           <MenuItem value="">Tüm Durumlar</MenuItem>
-          <MenuItem value="PENDING">Bekliyor</MenuItem>
+          <MenuItem value="PENDING">Beklemede</MenuItem>
           <MenuItem value="APPROVED">Onaylandı</MenuItem>
           <MenuItem value="REJECTED">Reddedildi</MenuItem>
         </TextField>
@@ -67,8 +80,7 @@ const SeeLeavesForm = () => {
         <Table size="small">
           <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
             <TableRow>
-              <TableCell>Ad</TableCell>
-              <TableCell>Soyad</TableCell>
+              <TableCell>Ad-Soyad</TableCell>
               <TableCell>İzin Türü</TableCell>
               <TableCell>Başlangıç</TableCell>
               <TableCell>Bitiş</TableCell>
@@ -76,26 +88,25 @@ const SeeLeavesForm = () => {
               <TableCell>Durum</TableCell>
               <TableCell>Açıklama</TableCell>
               <TableCell>İşlem</TableCell>
-              <TableCell>Onaylayan</TableCell>
+              <TableCell>Onaylayan Kişi</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {leaves.map((leave) => (
               <TableRow key={leave.id}>
-                <TableCell>{leave.employeeFirstName}</TableCell>
-                <TableCell>{leave.employeeLastName}</TableCell>
-                <TableCell>{leave.leaveType}</TableCell>
-                <TableCell>{leave.startDate}</TableCell>
-                <TableCell>{leave.endDate}</TableCell>
-                <TableCell>{leave.days}</TableCell>
+                <TableCell>{leave.employeeFirstName} {leave.employeeLastName}</TableCell>
+                <TableCell>{leaveTypeMap[leave.leaveType] || leave.leaveType}</TableCell>
+                <TableCell>{leave.startDate|| "-"}</TableCell>
+                <TableCell>{leave.endDate|| "-"}</TableCell>
+                <TableCell>{leave.days|| "-"}</TableCell>
                 <TableCell>
                   <Chip
-                    label={leave.status}
+                    label=  {leaveStatusMap[leave.status] || leave.status}
                     color={statusColors[leave.status] || "default"}
                     size="small"
                   />
                 </TableCell>
-                <TableCell>{leave.reason}</TableCell>
+                <TableCell>{leave.reason|| "-"}</TableCell>
                 <TableCell>
                   {leave.status === "PENDING" && (
                     <Stack direction="row" spacing={1}>
@@ -122,7 +133,7 @@ const SeeLeavesForm = () => {
                     </Stack>
                   )}
                 </TableCell>
-                <TableCell>{leave.approvedByFirstName}</TableCell>
+                <TableCell>{leave.approvedByFirstName} {leave.approvedByLastName}</TableCell>
               </TableRow>
             ))}
           </TableBody>
