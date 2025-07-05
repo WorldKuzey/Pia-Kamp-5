@@ -1,168 +1,284 @@
 import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Grid,
+  MenuItem,
+  Alert,
+  Typography,
+  Box,
+  Paper,
+} from "@mui/material";
 import useAddEmployee from "./useAddEmployee";
 
 const EmployeeForm = () => {
-    const [firstName, setFirstName] = useState("");
-    const [secondName, setSecondName] = useState("");
-    const [department, setDepartment] = useState("");
-    const [title, setTitle] = useState("");
-    const [phone, setPhone] = useState("");
-    const [role, setRole] = useState("");
-    const [gender, setGender] = useState("");
-    const [tc, setTc] = useState("");
-    const [salary, setSalary] = useState("");
-    const [address, setAddress] = useState("");
-    const [birth, setBirth] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    department: "",
+    title: "",
+    phone: "",
+    gender: "",
+    tc: "",
+    salary: "",
+    address: "",
+    date_of_birth: "",
+    email: "",
+    password: "",
+  });
 
+  const [imageFile, setImageFile] = useState(null);
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const { addEmp } = useAddEmployee();
 
-    const { addEmp } = useAddEmployee();
-    const handleAdd = () => {
-        addEmp(firstName, secondName,department,
-            title,
-            phone,
-            role, gender, tc, salary, address, birth,email, password);
-    };
-    return(
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let newValue = value;
 
-        <div className="flex gap-8 p-6 bg-white rounded-xl">
-            <div className="flex-1 space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">İsim</label>
-                    <input type="text"
-                           value={firstName}
-                           onChange={(e) => setFirstName(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="İsim giriniz"/>
-                </div>
+    if (name === "date_of_birth" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const [y, m, d] = value.split("-");
+      newValue = `${d}/${m}/${y}`;
+    }
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Soyisim</label>
-                    <input type="text"
-                           value={secondName}
-                           onChange={(e) => setSecondName(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Soyisim giriniz"/>
-                </div>
+    setFormData((prev) => ({ ...prev, [name]: newValue }));
+    setError("");
+    setSuccessMsg("");
+  };
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Departman</label>
-                    <input type="text"
-                           value={department}
-                           onChange={(e) => setDepartment(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Departman giriniz"/>
-                </div>
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Title</label>
-                    <input type="text"
-                           value={title}
-                           onChange={(e) => setTitle(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Title giriniz"/>
-                </div>
+  const validateForm = () => {
+    const nameRegex = /^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/;
+    const numberRegex = /^[0-9]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    if (!nameRegex.test(formData.firstName))
+      return "İsim sadece harf içermelidir.";
+    if (!nameRegex.test(formData.lastName))
+      return "Soyisim sadece harf içermelidir.";
+    if (!numberRegex.test(formData.tc) || formData.tc.length !== 11)
+      return "TC kimlik numarası 11 haneli olmalıdır.";
+    if (
+      !numberRegex.test(formData.phone) ||
+      formData.phone.length < 10 ||
+      formData.phone.length > 11
+    )
+      return "Telefon numarası geçersiz.";
+    if (!numberRegex.test(formData.salary) || Number(formData.salary) > 1000000)
+      return "Maaş 1.000.000 TL'den büyük olamaz.";
+    if (!emailRegex.test(formData.email))
+      return "Geçerli bir e-posta adresi giriniz.";
+    if (formData.password.length < 6)
+      return "Şifre en az 6 karakter olmalıdır.";
+    if (!formData.date_of_birth) return "Doğum tarihi boş bırakılamaz.";
+    return null;
+  };
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Telefon</label>
-                    <input type="tel"
-                           value={phone}
-                           onChange={(e) => setPhone(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="05xx xxx xx xx"/>
-                </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Cinsiyet</label>
-                    <input type="text"
-                           value={gender}
-                           onChange={(e) => setGender(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Cinsiyet giriniz"/>
-                </div>
+    const success = await addEmp(formData, imageFile);
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">TC Kimlik No</label>
-                    <input
-                        type="text"
-                        maxLength="11"
-                        pattern="[0-9]{11}"
-                        value={tc}
-                        onChange={(e) => setTc(e.target.value)}
-                        className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                        placeholder="12345678901"
-                    />
-                </div>
+    if (success) {
+      setFormData({
+        firstName: "",
+        lastName: "",
+        department: "",
+        title: "",
+        phone: "",
+        gender: "",
+        tc: "",
+        salary: "",
+        address: "",
+        date_of_birth: "",
+        email: "",
+        password: "",
+      });
+      setImageFile(null);
+      setError("");
+      setSuccessMsg("Çalışan başarıyla eklendi.");
+    } else {
+      setError("Kayıt sırasında hata oluştu.");
+    }
+  };
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Maaş</label>
-                    <input
-                        type="number"
-                        min="0"
-                        value={salary}
-                        onChange={(e) => setSalary(e.target.value)}
-                        className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                        placeholder="5000"
-                    />
-                </div>
+  return (
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 700, mx: "auto", mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        Çalışan Ekle
+      </Typography>
 
+      {error && <Alert severity="error">{error}</Alert>}
+      {successMsg && <Alert severity="success">{successMsg}</Alert>}
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Ev Adresi</label>
-                    <input type="text"
-                           value={address}
-                           onChange={(e) => setAddress(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Adres giriniz"/>
-                </div>
+      <Box component="form" onSubmit={handleSubmit} mt={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="İsim"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Doğum Tarihi</label>
-                    <input type="date"
-                           value={birth}
-                           onChange={(e) => setBirth(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"/>
-                </div>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Soyisim"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
 
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Departman"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email"
-                           value={email}
-                           onChange={(e) => setEmail(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="example@mail.com"/>
-                </div>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Ünvan"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Şifre</label>
-                    <input type="text"
-                           value={password}
-                           onChange={(e) => setPassword(e.target.value)}
-                           className="mt-1 block w-full border rounded-md p-2 shadow-sm focus:ring focus:border-blue-500"
-                           placeholder="Şifre giriniz"/>
-                </div>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Telefon"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
-                <div className="mt-6">
-                    <button
-                        onClick={() => handleAdd(firstName, secondName, department,
-                            title,
-                            phone,
-                            role, gender, tc, salary, address, birth, email, password)}
-                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Kaydet
-                    </button>
-                </div>
-            </div>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="TC"
+              name="tc"
+              value={formData.tc}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
-        </div>
-    );
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Maaş"
+              name="salary"
+              value={formData.salary}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Adres"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Grid>
 
+          <Grid item xs={12} sm={6}>
+            <TextField
+              type="date"
+              name="date_of_birth"
+              label="Doğum Tarihi"
+              InputLabelProps={{ shrink: true }}
+              onChange={handleChange}
+              fullWidth
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="Cinsiyet"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              fullWidth
+            >
+              <MenuItem value="">Seçiniz</MenuItem>
+              <MenuItem value="MALE">Erkek</MenuItem>
+              <MenuItem value="FEMALE">Kadın</MenuItem>
+            </TextField>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button variant="outlined" component="label">
+              Fotoğraf Yükle
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Button>
+            {imageFile && (
+              <Typography variant="body2">{imageFile.name}</Typography>
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              fullWidth
+              required
+              type="email"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Şifre"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              required
+              type="password"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Kaydet
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+    </Paper>
+  );
 };
 
 export default EmployeeForm;
-
-

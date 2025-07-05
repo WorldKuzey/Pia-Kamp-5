@@ -5,7 +5,18 @@ const ProfileDetails = ({ profile }) => {
 
   return (
     <div className="bg-white shadow rounded p-6 max-w-xl mx-auto">
-      <div className="mb-4">
+      {/* Fotoğraf */}
+      {profile.imageUrl && (
+        <div className="flex justify-center mb-4">
+          <img
+            src={profile.imageUrl}
+            alt="Profil Fotoğrafı"
+            className="w-28 h-28 rounded-full object-cover border"
+          />
+        </div>
+      )}
+
+      <div className="mb-4 text-center">
         <h3 className="text-xl font-semibold">
           {profile.firstName} {profile.lastName}
         </h3>

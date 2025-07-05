@@ -6,9 +6,17 @@ const useProfile = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId"); // Girişte kaydedilmiş olmalı
+
+    if (!userId) {
+      setError("Kullanıcı ID bulunamadı.");
+      setLoading(false);
+      return;
+    }
+
     const fetchProfile = async () => {
       try {
-        const res = await fetch("/api/employees/summaries");
+        const res = await fetch(`/api/employees/employee/${userId}`);
         if (!res.ok) throw new Error("Profil bilgileri alınamadı");
         const data = await res.json();
         setProfile(data);

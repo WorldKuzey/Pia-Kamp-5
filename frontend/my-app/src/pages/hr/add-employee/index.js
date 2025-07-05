@@ -1,18 +1,16 @@
+// src/pages/hr/employee/index.js
 import React from "react";
-import EmployeeForm from "./EmployeeForm";
 import AppLayout from "../../../components/layout/AppLayout";
+import EmployeeForm from "./EmployeeForm";
 
-const HRAddEmp = () => {
-    return (
-        <AppLayout>
-            <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4 text-gray-700">
-                    Çalışan Ekleme
-                </h2>
-                <EmployeeForm />
-            </div>
-        </AppLayout>
-    );
+const HREmployeeAddPage = () => {
+  return (
+    <AppLayout>
+      <div className="p-6 max-w-4xl mx-auto">
+        <EmployeeForm />
+      </div>
+    </AppLayout>
+  );
 };
 
-export default HRAddEmp;
+export default HREmployeeAddPage;
