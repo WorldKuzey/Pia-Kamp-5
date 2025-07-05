@@ -1,100 +1,135 @@
-import React from "react";
-import {useEffect} from "react";
+import React, { useEffect } from "react";
+import {
+  Box,
+  TextField,
+  MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Chip,
+  Stack,
+  Button,
+} from "@mui/material";
 import useSeeLeaves from "./useSeeLeaves";
 
+const statusColors = {
+  APPROVED: "success",
+  PENDING: "warning",
+  REJECTED: "error",
+};
 
 const SeeLeavesForm = () => {
-    const {leaves, fetchLeaves, changeLeaveStatus} = useSeeLeaves();
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-        console.error("ID bulunamadı. localStorage'da kayıtlı olmayabilir.");
-    }
-    useEffect(() => {
-        fetchLeaves();
-    }, []);
-    const handleUpdateStatus = async(id, newStatus, approverId) => {
-        await changeLeaveStatus(id, newStatus, approverId);
-        await fetchLeaves();
-    };
+  const { leaves, fetchLeaves, changeLeaveStatus, setFilter, filter } =
+    useSeeLeaves();
+  const userId = localStorage.getItem("userId");
 
+  // fetch, component mount olduğunda ve filtre değiştiğinde otomatik çağrılır
+  useEffect(() => {
+    fetchLeaves();
+  }, [filter.status]);
 
+  const handleUpdateStatus = async (id, newStatus, approverId) => {
+    await changeLeaveStatus(id, newStatus, approverId);
+    await fetchLeaves();
+  };
 
+  return (
+    <Box component={Paper} sx={{ p: 4, borderRadius: 2 }}>
+      <Typography variant="h5" fontWeight="bold" mb={3}>
+        Çalışan İzinleri
+      </Typography>
 
+      <Box sx={{ maxWidth: 200, mb: 3 }}>
+        <TextField
+          label="Durum"
+          select
+          fullWidth
+          variant="outlined"
+          size="small"
+          value={filter.status}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, status: e.target.value }))
+          }
+        >
+          <MenuItem value="">Tüm Durumlar</MenuItem>
+          <MenuItem value="PENDING">Bekliyor</MenuItem>
+          <MenuItem value="APPROVED">Onaylandı</MenuItem>
+          <MenuItem value="REJECTED">Reddedildi</MenuItem>
+        </TextField>
+      </Box>
 
-    return(
-
-        <div className="flex gap-8 p-6 bg-white rounded-xl">
-            <div className="flex-1 space-y-4">
-                <table className="min-w-full border border-gray-300">
-                    <thead className="bg-gray-100">
-                    <tr>
-                        <th className="px-4 py-2 border">Kişi Adı</th>
-                        <th className="px-4 py-2 border">Kişi Soyadı</th>
-                        <th className="px-4 py-2 border">İzin Türü</th>
-                        <th className="px-4 py-2 border">Başlangıç Tarihi</th>
-                        <th className="px-4 py-2 border">Bitiş Tarihi</th>
-                        <th className="px-4 py-2 border">Gün Sayısı</th>
-                        <th className="px-4 py-2 border">Durum</th>
-                        <th className="px-4 py-2 border">Açıklama</th>
-                        <th className="px-4 py-2 border">İşlem Yap</th>
-                        <th className="px-4 py-2 border">İşlem Yapan Kişi</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {leaves.map((leave) => (
-                        <tr key={leave.id} className="text-center">
-                            <td className="border px-4 py-2">{leave.employeeFirstName}</td>
-                            <td className="border px-4 py-2">{leave.employeeLastName}</td>
-                            <td className="border px-4 py-2">{leave.leaveType}</td>
-                            <td className="border px-4 py-2">{leave.startDate}</td>
-                            <td className="border px-4 py-2">{leave.endDate}</td>
-                            <td className="border px-4 py-2">{leave.days}</td>
-                            <td className="border px-4 py-2">
-                                <span
-                                  className={`px-2 py-1 rounded-full text-white text-sm ${
-                                      leave.status === "APPROVED"
-                                         ? "bg-green-500"
-                                         : leave.status === "PENDING"
-                                            ? "bg-yellow-500"
-                                          : "bg-red-500"
-                                   }`}
-                                >
-                                 {leave.status}
-                               </span>
-                            </td>
-                            <td className="border px-4 py-2">{leave.reason}</td>
-                            <td className="border px-4 py-2 space-x-2">
-                                {leave.status === "PENDING" && (
-                                    <>
-                                        <button
-                                            onClick={() => handleUpdateStatus(leave.id, "APPROVED", userId)}
-                                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                                        >
-                                            Onayla
-                                        </button>
-                                        <button
-                                            onClick={() => handleUpdateStatus(leave.id, "REJECTED", userId)}
-                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600  mt-2"
-                                        >
-                                            Reddet
-                                        </button>
-                                    </>
-                                )}
-                            </td>
-                            <td className="border px-4 py-2">{leave.approvedByFirstName}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-
-            </div>
-
-        </div>
-    );
-
-
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableRow>
+              <TableCell>Ad</TableCell>
+              <TableCell>Soyad</TableCell>
+              <TableCell>İzin Türü</TableCell>
+              <TableCell>Başlangıç</TableCell>
+              <TableCell>Bitiş</TableCell>
+              <TableCell>Gün</TableCell>
+              <TableCell>Durum</TableCell>
+              <TableCell>Açıklama</TableCell>
+              <TableCell>İşlem</TableCell>
+              <TableCell>Onaylayan</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {leaves.map((leave) => (
+              <TableRow key={leave.id}>
+                <TableCell>{leave.employeeFirstName}</TableCell>
+                <TableCell>{leave.employeeLastName}</TableCell>
+                <TableCell>{leave.leaveType}</TableCell>
+                <TableCell>{leave.startDate}</TableCell>
+                <TableCell>{leave.endDate}</TableCell>
+                <TableCell>{leave.days}</TableCell>
+                <TableCell>
+                  <Chip
+                    label={leave.status}
+                    color={statusColors[leave.status] || "default"}
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell>{leave.reason}</TableCell>
+                <TableCell>
+                  {leave.status === "PENDING" && (
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        size="small"
+                        onClick={() =>
+                          handleUpdateStatus(leave.id, "APPROVED", userId)
+                        }
+                      >
+                        Onayla
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={() =>
+                          handleUpdateStatus(leave.id, "REJECTED", userId)
+                        }
+                      >
+                        Reddet
+                      </Button>
+                    </Stack>
+                  )}
+                </TableCell>
+                <TableCell>{leave.approvedByFirstName}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
 };
 
 export default SeeLeavesForm;
-
-

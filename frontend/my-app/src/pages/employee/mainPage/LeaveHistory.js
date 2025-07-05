@@ -1,4 +1,3 @@
-// pages/employee/leaves/LeaveHistoryChart.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -10,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50"];
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#00c49f"];
 
 const LeaveHistoryChart = () => {
   const [data, setData] = useState([]);
@@ -23,15 +22,13 @@ const LeaveHistoryChart = () => {
         const res = await axios.get("http://localhost:5000/api/leaves");
         const allLeaves = res.data;
 
-        // Sadece kullanıcının verileri
         const userLeaves = allLeaves.filter(
           (leave) => leave.employeeId === userId
         );
 
-        // leaveType'a göre grupla
         const grouped = {};
         userLeaves.forEach((leave) => {
-          const type = leave.leaveType;
+          const type = leave.leaveType || "BELİRTİLMEMİŞ";
           grouped[type] = (grouped[type] || 0) + 1;
         });
 
@@ -50,23 +47,35 @@ const LeaveHistoryChart = () => {
     fetchLeaves();
   }, [userId]);
 
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (error)
+    return (
+      <div className="text-red-600 bg-white p-4 rounded shadow">{error}</div>
+    );
+
   if (data.length === 0)
-    return <p>Henüz görselleştirilecek izin verisi yok.</p>;
+    return (
+      <div className="text-gray-600 bg-white p-4 rounded shadow">
+        Henüz görselleştirilecek izin verisi yok.
+      </div>
+    );
 
   return (
-    <div className="w-full h-96 bg-white rounded shadow p-4 mt-8">
-      <h2 className="text-lg font-semibold mb-4">İzin Türü Geçmişi</h2>
+    <div className="w-full h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            dataKey="value"
-            isAnimationActive
             data={data}
+            dataKey="value"
+            nameKey="name"
             cx="50%"
             cy="50%"
+            innerRadius={40}
             outerRadius={100}
-            label
+            paddingAngle={3}
+            label={({ name, percent }) =>
+              `${name} (${(percent * 100).toFixed(0)}%)`
+            }
+            isAnimationActive
           >
             {data.map((_, index) => (
               <Cell
@@ -76,7 +85,7 @@ const LeaveHistoryChart = () => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          <Legend layout="horizontal" verticalAlign="bottom" align="center" />
         </PieChart>
       </ResponsiveContainer>
     </div>

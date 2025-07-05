@@ -1,7 +1,7 @@
 import React from "react";
 import EmployeeLayout from "../../../components/layout/AppLayout";
 import PersonalLeaveStatusChart from "./PersonalLeaveStatusChart";
-import LeaveHistory from "./LeaveHistory";
+import LeaveHistoryChart from "./LeaveHistory";
 
 const LeavePage = () => {
   const role = localStorage.getItem("role");
@@ -14,18 +14,16 @@ const LeavePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Kişisel izin durumu grafiği */}
           <div className="bg-white rounded-lg shadow p-4">
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">
-              Kişisel İzin Dağılımı
-            </h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700"></h2>
             <PersonalLeaveStatusChart />
           </div>
 
-          {/* İzin geçmişi grafiği */}
+          {/* İzin türü geçmişi grafiği */}
           <div className="bg-white rounded-lg shadow p-4">
             <h2 className="text-lg font-semibold mb-2 text-gray-700">
-              İzin Geçmişi
+              İzin Durum Dağılımı
             </h2>
-            <LeaveHistory />
+            <LeaveHistoryChart />
           </div>
         </div>
       </div>

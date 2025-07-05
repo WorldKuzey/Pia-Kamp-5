@@ -17,12 +17,14 @@ const COLORS = {
 
 const PersonalLeaveStatusChart = () => {
   const [data, setData] = useState([]);
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    fetch("/api/leaves") // Backend'den kullanıcının izinlerini çekiyoruz
+    if (!userId) return;
+
+    fetch(`/api/leaves?employeeId=${userId}`)
       .then((res) => res.json())
       .then((leaves) => {
-        // Durum bazında say
         const counts = { PENDING: 0, APPROVED: 0, REJECTED: 0 };
 
         leaves.forEach((leave) => {
@@ -30,7 +32,6 @@ const PersonalLeaveStatusChart = () => {
           if (counts[status] !== undefined) counts[status]++;
         });
 
-        // Pie için array formatı
         const chartData = Object.entries(counts).map(([status, value]) => ({
           name: status,
           value,
@@ -39,7 +40,7 @@ const PersonalLeaveStatusChart = () => {
         setData(chartData);
       })
       .catch(console.error);
-  }, []);
+  }, [userId]);
 
   return (
     <div style={{ width: "100%", height: 300 }}>

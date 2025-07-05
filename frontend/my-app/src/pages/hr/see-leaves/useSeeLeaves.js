@@ -2,50 +2,73 @@ import axios from "axios";
 import { useState } from "react";
 
 const useSeeLeaves = () => {
-    const [leaves, setLeaves] = useState([]);
-    const fetchLeaves= async () => {
-        try {
-            const res = await axios.get("http://localhost:5000/api/leaves");
-            const rawLeaves = res.data;
-            console.log(rawLeaves)
-            const leavesWithNames = [];
-            for (const leave of rawLeaves) {
-                try {
-                    const empId = leave.employeeId
-                    console.log(empId)
-                    const empRes = await axios.get(`http://localhost:5000/api/employees/employee/${empId}`);
-                    const employee = empRes.data;
-                    leavesWithNames.push({
-                        ...leave,
-                        employeeFirstName: employee.firstName,
-                        employeeLastName: employee.lastName,
-                    });
-                    console.log(leavesWithNames)
-                } catch (err) {
-                    console.log("izni alan kisi alınamadı.")
-                }
-            }
-            setLeaves(leavesWithNames);
-        } catch (err) {
-            alert("Getting leaves is failed: " + (err.response?.data?.message || err.message));
-        }
-    };
+  const [leaves, setLeaves] = useState([]);
+  const [filter, setFilter] = useState({ employeeId: "", status: "" });
 
-    const changeLeaveStatus = async(leaveId, newStatus, approverId) => {
-        try {
-            await axios.patch(`http://localhost:5000/api/leaves/${leaveId}/status`, null, {
-                params: {
-                    status: newStatus,
-                    approverId: approverId,
-                },
-            });
+  const fetchLeaves = async () => {
+    try {
+      const params = {};
+      if (filter.employeeId) params.employeeId = filter.employeeId;
+      if (filter.status) params.status = filter.status;
 
-            alert("Durum guncellendi!");
+      const res = await axios.get("http://localhost:5000/api/leaves", {
+        params,
+      });
+      const rawLeaves = res.data;
+      const leavesWithNames = [];
+
+      for (const leave of rawLeaves) {
+        try {
+          const empId = leave.employeeId;
+          const empRes = await axios.get(
+            `http://localhost:5000/api/employees/employee/${empId}`
+          );
+          const employee = empRes.data;
+
+          leavesWithNames.push({
+            ...leave,
+            employeeFirstName: employee.firstName,
+            employeeLastName: employee.lastName,
+            approvedByFirstName: leave.approvedByFirstName || "",
+            leaveType: leave.leaveType || "BELİRTİLMEMİŞ", // null durumunu engelle
+          });
         } catch (err) {
-            alert("Changing leave status is failed: " + (err.response?.data?.message || err.message));
+          console.log("İzni alan kişi alınamadı.");
         }
-    };
-    return {leaves, fetchLeaves, changeLeaveStatus};
+      }
+
+      setLeaves(leavesWithNames);
+    } catch (err) {
+      alert(
+        "Getting leaves is failed: " +
+          (err.response?.data?.message || err.message)
+      );
+    }
+  };
+
+  const changeLeaveStatus = async (leaveId, newStatus, approverId) => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/leaves/${leaveId}/status`,
+        null,
+        {
+          params: {
+            status: newStatus,
+            approverId: approverId,
+          },
+        }
+      );
+
+      alert("Durum güncellendi!");
+    } catch (err) {
+      alert(
+        "Changing leave status is failed: " +
+          (err.response?.data?.message || err.message)
+      );
+    }
+  };
+
+  return { leaves, fetchLeaves, changeLeaveStatus, setFilter, filter };
 };
 
 export default useSeeLeaves;
