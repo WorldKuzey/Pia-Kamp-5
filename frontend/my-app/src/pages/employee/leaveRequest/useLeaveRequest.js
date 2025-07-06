@@ -6,7 +6,13 @@ const useLeaveRequest = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-
+  const [employeeInfo, setEmployeeInfo] = useState({
+    gender: "",
+    remainingAnnualLeave: 0,
+    remainingSickLeave: 0,
+    remainingMarriageLeave: 0,
+    remainingFatherLeave: 0
+  });
   const submitLeave = async (formData) => {
     setLoading(true);
     setError("");
@@ -32,7 +38,29 @@ const useLeaveRequest = () => {
     }
   };
 
-  return { submitLeave, loading, error, success };
+  const employeeInformations = async(empId) => {
+      try{
+        const empInf = await axios.get(
+            `http://localhost:5000/api/employees/employee/${empId}`
+        );
+        const employee = empInf.data;
+        setEmployeeInfo({
+          gender: employee.gender,
+          remainingAnnualLeave: employee.remainingAnnualLeave,
+          remainingSickLeave: employee.remainingSickLeave,
+          remainingMarriageLeave: employee.remainingMarriageLeave,
+          remainingFatherLeave: employee.remainingFatherLeave
+        });
+      }
+      catch(err){
+        setError("Çalışan bilgileri alınırken hata oluştu.");
+
+      }
+  }
+
+
+
+  return { submitLeave, loading, error, success,setSuccess,employeeInfo,employeeInformations };
 };
 
 export default useLeaveRequest;

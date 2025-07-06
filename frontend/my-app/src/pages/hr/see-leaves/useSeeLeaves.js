@@ -30,7 +30,7 @@ const useSeeLeaves = () => {
             employeeFirstName: employee.firstName,
             employeeLastName: employee.lastName,
             approvedByFirstName: leave.approvedByFirstName || "",
-            leaveType: leave.leaveType || "BELİRTİLMEMİŞ", // null durumunu engelle
+            leaveType: leave.leaveType || "BELİRTİLMEMİŞ",
           });
         } catch (err) {
           console.log("İzni alan kişi alınamadı.");
