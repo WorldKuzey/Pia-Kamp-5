@@ -70,7 +70,6 @@ const LeaveForm = () => {
       }
     }
     const result = await submitLeave(formData);
-
     if (result) {
       //  Hem React state'i hem native form'u sıfırla
       setFormData({
@@ -79,8 +78,9 @@ const LeaveForm = () => {
         endDate: "",
         reason: "",
       });
-
       formRef.current.reset(); // <form> elementini temizler
+      console.log("Form sıfırlandı:", formData);
+
     }
   };
 

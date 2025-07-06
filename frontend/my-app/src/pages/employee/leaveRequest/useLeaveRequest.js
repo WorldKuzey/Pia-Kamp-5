@@ -29,10 +29,12 @@ const useLeaveRequest = () => {
     };
 
     try {
-      await axios.post("/api/leaves", payload);
+      const response= await axios.post("/api/leaves", payload);
       setSuccess(true);
+      return response.data
     } catch (err) {
       setError("İzin talebi gönderilirken bir hata oluştu.");
+      return null;
     } finally {
       setLoading(false);
     }
