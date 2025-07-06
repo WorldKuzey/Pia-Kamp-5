@@ -208,6 +208,8 @@ public class EmployeeServiceIMPL implements IEmployeeService {
             dto.setLastName(employee.getLastName());
             dto.setDepartment(employee.getDepartment());
             dto.setTitle(employee.getTitle());
+            dto.setEmail(employee.getEmail());
+            dto.setRole(employee.getRole());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -626,7 +628,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         if (dto.getDepartment() != null && dto.getDepartment().trim().equalsIgnoreCase(departmentName)) {
             employee.setRole("HR");
         } else {
-            employee.setRole("employee");
+            employee.setRole("Employee");
         }
 
         /////yeni eklenen özellikler
