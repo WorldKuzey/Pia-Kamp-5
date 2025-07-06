@@ -345,6 +345,17 @@ public ResponseEntity<String> delete(@PathVariable String id) {
 
 
 
+    @PatchMapping(value = "/update_pfp/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public EmployeeDTO updateEmployeeImage(
+            @PathVariable String id,
+            @RequestPart("image") MultipartFile imageFile) throws IOException {
+
+        return IEmployeeService.updateEmployeeImage(id, imageFile);
+    }
+
+
+
+
 
 /// / DSKDSKDSKDSK
 }

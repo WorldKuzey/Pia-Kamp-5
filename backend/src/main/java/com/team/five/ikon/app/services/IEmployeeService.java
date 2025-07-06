@@ -66,6 +66,7 @@ public interface IEmployeeService {
 
     EmployeeDTO updateEmployee(String id, EmployeeDTO dto);
     EmployeeDTO updatePasswordForEmployee(String id, UpdatePasswordRequestDTO request);
+    EmployeeDTO updateEmployeeImage(String id, MultipartFile imageFile) throws IOException;
 
 
 

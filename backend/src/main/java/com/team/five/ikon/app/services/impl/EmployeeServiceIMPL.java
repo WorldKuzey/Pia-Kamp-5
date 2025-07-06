@@ -729,7 +729,18 @@ public class EmployeeServiceIMPL implements IEmployeeService {
     }
 
 
+    @Override
+    public EmployeeDTO updateEmployeeImage(String id, MultipartFile imageFile) throws IOException {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
 
+        // Use your existing utility
+        handleImageUpload(employee, imageFile);
+
+        Employee saved = employeeRepository.save(employee);
+
+        return convertToDTO(saved);
+    }
 
 
 
