@@ -9,7 +9,9 @@ import com.team.five.ikon.app.repository.LeaveRequestRepository;
 import com.team.five.ikon.app.services.ILeaveRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -77,6 +79,27 @@ public class LeaveRequestServiceIMPL implements ILeaveRequestService {
             leave.setDays(dayCount);
         } else {
             leave.setDays(0);
+        }
+
+        // Çalışanı bul
+        Employee employee = employeeRepository.findById(dto.getEmployeeId())
+                .orElseThrow(() -> new RuntimeException("Çalışan bulunamadı."));
+
+        // Kalan gün kontrolü
+        long dayCount = leave.getDays();
+
+        int remainingDays = switch (dto.getLeaveType()) {
+            case ANNUAL_LEAVE -> employee.getRemainingAnnualLeave();
+            case SICK_LEAVE -> employee.getRemainingSickLeave();
+            case FATHER_LEAVE -> employee.getRemainingFatherLeave();
+            case MARRIAGE_LEAVE -> employee.getRemainingMarriageLeave();
+        };
+
+
+        if (dayCount > remainingDays) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Yetersiz izin hakkı. Kalan gün: " + remainingDays
+            );
         }
 
         leave.setStatus(LeaveStatus.PENDING); // default statü
