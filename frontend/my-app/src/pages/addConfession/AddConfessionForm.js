@@ -27,40 +27,40 @@ const AddConfessionForm = () => {
     };
 
     return(
-        <div className="flex gap-8 p-6 bg-white rounded-xl">
-            <div className="flex-1 space-y-4">
+        <div className="flex gap-8 p-6 bg-white rounded-xl justify-center">
+            <div className="flex flex-col items-center space-y-4 max-w-4xl">
                 <header className="text-center py-4 font-bold text-2xl" style={{ fontFamily: ' cursive, sans-serif' }}>
                     Anonymous Confession
                 </header>
-                <div style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }} >
+                <div className="flex items-center gap-4 w-0.8" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }} >
                    <p style={{ textAlign: "justify" }}>
                        We understand that sometimes, it's hard to share personal thoughts or challenges openly at work. This space is here for you to express yourself freely and anonymously, without fear of judgment. Whether it's a small frustration, a big idea, or something you’ve been holding onto, your confession matters. It’s a safe place to be heard. Take a moment to reflect and let your voice be part of creating a more open, supportive workplace. We’re here to listen.
                    </p>
                 </div>
-                <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
+                <div className="flex items-center gap-4 w-1/2" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <label className="block text-sm font-medium text-gray-700">Nickname</label>
                     <input type="text"
                            value={nickname}
                            onChange={(e) =>setNickname(e.target.value)}
                            maxLength={32}
-                           className="mt-1 block w-full border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
+                           className="flex-grow mt-1 block w-80 border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Enter Nickname"/>
                 </div>
-                <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
+                <div className="flex items-center gap-4  w-1/2" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                         <label className="block text-sm font-medium text-gray-700">Age Interval</label>
                     <input type="text"
                            value={interval}
                            onChange={(e) =>setInterval(e.target.value)}
                            maxLength={8}
-                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
+                           className="mt-1 block w-25 border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Eg 25-35"/>
                 </div>
-                <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
+                <div className="flex items-center gap-4 w-1/2 " style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <label className="block text-sm font-medium text-gray-700">Department</label>
                     <select
                         value={department}
                         onChange={(e) => setDepartment(e.target.value)}
-                        className="mt-1 block w-full border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-gray-700 text-green-600"
+                        className="mt-1 block w-60 border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-gray-700 text-green-600"
                     >
                         <option value="">Select Department</option>
                         <option value="İnsan Kaynaklari">İnsan Kaynaklari</option>
@@ -70,14 +70,14 @@ const AddConfessionForm = () => {
                     </select>
                 </div>
 
-                <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
+                <div className="flex items-center gap-4  w-1/2" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <label className="block text-sm font-medium text-gray-700">Confession</label>
                     <textarea type="text"
                            value={confession}
                            onChange={(e) =>setConfession(e.target.value)}
                            maxLength={256}
                            rows={5}
-                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
+                           className="flex-grow mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Add your confession here..."/>
                 </div>
                 <div className="flex items-center space-x-2" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
