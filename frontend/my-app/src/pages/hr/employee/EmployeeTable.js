@@ -21,12 +21,48 @@ import {
   MenuItem,
 } from "@mui/material";
 
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 const EmployeeTable = ({ employees, fetchEmployees }) => {
   const [openRow, setOpenRow] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  // API çağrısı ile çalışanı güncelle
+  // Excel'e aktarım fonksiyonu
+  const handleExportExcel = () => {
+    const formattedData = employees.map((emp) => ({
+      ID: emp.id || emp._id,
+      Ad: emp.firstName || "-",
+      Soyad: emp.lastName || "-",
+      Email: emp.email || "-",
+      Rol: emp.role || "-",
+      Departman: emp.department || "-",
+      Ünvan: emp.title || "-",
+      Telefon: emp.phone || "-",
+      Cinsiyet: emp.gender || "-",
+      TC: emp.tc || "-",
+      Maaş: emp.salary || "-",
+      Adres: emp.address || "-",
+      "Doğum Tarihi": emp.date_of_birth || "-",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Çalışanlar");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const blob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+
+    saveAs(blob, "calisan_listesi.xlsx");
+  };
+
   const updateEmployee = async (id, updatedData) => {
     try {
       const res = await fetch(`/api/employees/update_employee/${id}`, {
@@ -45,7 +81,6 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
     }
   };
 
-  // API çağrısı ile çalışanı sil
   const handleDelete = async (id) => {
     const confirm = window.confirm("Bu çalışanı silmek istiyor musunuz?");
     if (!confirm) return;
@@ -92,6 +127,12 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
 
   return (
     <>
+      <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Button variant="contained" color="success" onClick={handleExportExcel}>
+          Excel Olarak İndir
+        </Button>
+      </Box>
+
       <TableContainer component={Paper} elevation={3}>
         <Table>
           <TableHead>
