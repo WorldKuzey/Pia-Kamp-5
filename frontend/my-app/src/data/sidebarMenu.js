@@ -8,6 +8,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import LeavesIcon from "@mui/icons-material/BubbleChart";
+import AddCommentIcon from "@mui/icons-material/AddComment"; // İtiraf Ekle
+import ForumIcon from "@mui/icons-material/Forum"; // İtirafları Görüntüle
 
 export const HR_MENU = [
   {
@@ -31,6 +33,16 @@ export const HR_MENU = [
     icon: <LeavesIcon fontSize="small" />,
   },
   {
+    label: "İtiraf Ekle",
+    path: "/confession/add",
+    icon: <AddCommentIcon fontSize="small" />,
+  },
+  {
+    label: "İtirafları Görüntüle",
+    path: "/confession/view",
+    icon: <ForumIcon fontSize="small" />,
+  },
+  {
     label: "Profilim",
     path: "/hr/profile",
     icon: <AccountCircleIcon fontSize="small" />,
@@ -52,6 +64,16 @@ export const EMPLOYEE_MENU = [
     label: "İzin Ekle",
     path: "/employee/leave-request",
     icon: <EventNoteIcon fontSize="small" />,
+  },
+  {
+    label: "İtiraf Ekle",
+    path: "/confession/add",
+    icon: <AddCommentIcon fontSize="small" />,
+  },
+  {
+    label: "İtirafları Görüntüle",
+    path: "/confession/view",
+    icon: <ForumIcon fontSize="small" />,
   },
   {
     label: "Profilim",

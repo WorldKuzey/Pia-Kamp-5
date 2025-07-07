@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import LoginPage from "./pages/login";
 import HRMainPage from "./pages/hr/mainPage";
 import EmployeeMainPage from "./pages/employee/mainPage";
@@ -10,12 +11,18 @@ import ProtectedRoute from "./components/routing/ProtectedRoute";
 import HRAddEmp from "./pages/hr/add-employee/index.js";
 import HRSeeLeaves from "./pages/hr/see-leaves/index.js";
 
+// 🆕 İtiraf sayfaları
+import AddConfession from "./pages/addConfession";
+import ViewConfessions from "./pages/viewConfession";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Giriş */}
         <Route path="/" element={<LoginPage />} />
 
+        {/* HR Sayfaları */}
         <Route
           path="/hr/mainpage"
           element={
@@ -24,43 +31,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-              path="/hr/add-employee"
-              element={
-                  <ProtectedRoute allowedRoles={["HR"]}>
-                      <HRAddEmp />
-                  </ProtectedRoute>
-              }
-        />
-
-        <Route
-              path="/hr/employees-leaves"
-              element={
-                  <ProtectedRoute allowedRoles={["HR"]}>
-                      <HRSeeLeaves />
-                  </ProtectedRoute>
-              }
-        />
-
-        <Route
-          path="/employee/mainpage"
-          element={
-            <ProtectedRoute allowedRoles={["employee"]}>
-              <EmployeeMainPage />
-            </ProtectedRoute>
-          }
-        />
-
-          <Route
-              path="/employee/profile"
-              element={
-                  <ProtectedRoute allowedRoles={["employee"]}>
-                      <ProfilePage />
-                  </ProtectedRoute>
-              }
-          />
-
         <Route
           path="/hr/employees"
           element={
@@ -69,7 +39,58 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/hr/add-employee"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRAddEmp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hr/employees-leaves"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRSeeLeaves />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Employee Sayfaları */}
+        <Route
+          path="/employee/mainpage"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <EmployeeMainPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/leaves"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <LeavePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/leave-request"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <LeaveRequestPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/profile"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Ortak Sayfa (HR & Employee) */}
         <Route
           path="/hr/profile"
           element={
@@ -80,19 +101,18 @@ function App() {
         />
 
         <Route
-          path="/employee/leaves"
+          path="/confession/add"
           element={
-            <ProtectedRoute allowedRoles={["employee"]}>
-              <LeavePage />
+            <ProtectedRoute allowedRoles={["HR", "employee"]}>
+              <AddConfession />
             </ProtectedRoute>
           }
         />
-
         <Route
-          path="/employee/leave-request" // izin talebi oluşturma sayfası
+          path="/confession/view"
           element={
-            <ProtectedRoute allowedRoles={["employee"]}>
-              <LeaveRequestPage />
+            <ProtectedRoute allowedRoles={["HR", "employee"]}>
+              <ViewConfessions />
             </ProtectedRoute>
           }
         />
