@@ -18,6 +18,9 @@ const ViewConfessionCard = ({ confession }) => {
         <span className="font-semibold text-gray-800">
           {confession.author || "Anonim"}
         </span>
+        <span className="font-semibold text-gray-800">
+          {confession.ageInterval || "Age Interval"}
+        </span>
         <time dateTime={confession.createdAt} className="text-sm text-gray-500">
           {new Date(confession.createdAt).toLocaleDateString("tr-TR", {
             year: "numeric",

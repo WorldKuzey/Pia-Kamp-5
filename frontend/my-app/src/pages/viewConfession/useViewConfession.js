@@ -22,6 +22,7 @@ const useViewConfession = () => {
           author: item.nickname, // nickname -> author (bizim kartta author)
           text: item.confession_text, // confession_text -> text
           createdAt: item.createdAt,
+          ageInterval: item.ageInterval,
           // diğer alanlar burada gerekmez
         }));
         setConfessions(data);
