@@ -182,12 +182,13 @@ public List<EmployeeSummaryDTO> getAllSummaries() {
 
 @GetMapping("/summaries/filter")
 public List<EmployeeSummaryDTO> filterEmployees(
+        @RequestParam(required = false) String id ,
         @RequestParam(required = false) Gender gender,
         @RequestParam(required = false) String department,
         @RequestParam(required = false) String role,
         @RequestParam(required = false) String title
         ) {
-        return IEmployeeService.filterEmployees(gender, department, role, title);
+        return IEmployeeService.filterEmployees(id, gender, department, role, title);
         }
 
 

@@ -8,4 +8,5 @@ public class UpdateProjectMemberRoleDTO {
 
     @NotBlank(message = "Projedeki rol boş bırakılamaz.")
     private String roleInProject;
+
 }

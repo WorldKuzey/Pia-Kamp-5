@@ -217,14 +217,16 @@ public class EmployeeServiceIMPL implements IEmployeeService {
 
 
     @Override
-    public List<EmployeeSummaryDTO> filterEmployees(Gender gender, String department, String role, String title) {
+    public List<EmployeeSummaryDTO> filterEmployees(String id,Gender gender, String department, String role, String title) {
         return employeeRepository.findAll().stream()
+                .filter(emp -> id == null || emp.getId().equals(id))
                 .filter(emp -> gender == null || (emp.getGender() != null && emp.getGender().equals(gender)))
                 .filter(emp -> department == null || emp.getDepartment().equalsIgnoreCase(department))
                 .filter(emp -> role == null || emp.getRole().equalsIgnoreCase(role))
                 .filter(emp -> title == null || emp.getTitle().equalsIgnoreCase(title))
                 .map(emp -> {
                     EmployeeSummaryDTO dto = new EmployeeSummaryDTO();
+                    dto.setId(emp.getId());
                     dto.setFirstName(emp.getFirstName());
                     dto.setLastName(emp.getLastName());
                     dto.setDepartment(emp.getDepartment());
@@ -234,6 +236,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
                 })
                 .collect(Collectors.toList());
     }
+
 
 
 
