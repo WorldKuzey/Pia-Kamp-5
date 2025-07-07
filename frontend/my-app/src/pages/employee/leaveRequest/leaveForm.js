@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import useLeaveRequest from "./useLeaveRequest";
 
 const LeaveForm = () => {
@@ -9,10 +9,19 @@ const LeaveForm = () => {
     reason: "",
   });
 
-  const { submitLeave, loading, error, success ,setSuccess,employeeInfo,employeeInformations} = useLeaveRequest();
+  const {
+    submitLeave,
+    loading,
+    error,
+    success,
+    setSuccess,
+    employeeInfo,
+    employeeInformations,
+  } = useLeaveRequest();
   const [validationError, setValidationError] = useState("");
   const formRef = useRef(); // native form referansı
   const userId = localStorage.getItem("userId");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -20,16 +29,19 @@ const LeaveForm = () => {
   };
 
   useEffect(() => {
-    employeeInformations(userId);
-  }, []);
+    if (userId) {
+      employeeInformations(userId);
+    }
+  }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
+
     const start = new Date(formData.startDate);
     const end = new Date(formData.endDate);
     const now = new Date();
-    console.log(now)
+
     if (start < now) {
       setValidationError("Başlangıç tarihi geçmişte olamaz.");
       return;
@@ -44,43 +56,62 @@ const LeaveForm = () => {
       setValidationError("Başlangıç tarihi, bitiş tarihinden önce olmalıdır.");
       return;
     }
-    const izinTuru=formData.leaveType;
-    if(izinTuru === "ANNUAL_LEAVE" ){
-      if(employeeInfo.remainingAnnualLeave <= 0){
-        setValidationError("Yıllık izin hakkınız bulunmamaktadır.");
-        return;
-      }
+
+    // Gün sayısı hesaplama (+1 dahil, izin her iki gün dahil)
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+    const izinTuru = formData.leaveType;
+
+    // Kalan izin hakkı kontrolü
+    if (
+      izinTuru === "ANNUAL_LEAVE" &&
+      diffDays > employeeInfo.remainingAnnualLeave
+    ) {
+      setValidationError(
+        `Yıllık izin hakkınız ${employeeInfo.remainingAnnualLeave} gün. Daha fazla talep edemezsiniz.`
+      );
+      return;
     }
-    else if(izinTuru === "MARRIAGE_LEAVE" ){
-      if(employeeInfo.remainingMarriageLeave <= 0){
-        setValidationError("Evlilik izin hakkınız bulunmamaktadır.");
-        return;
-      }
+    if (
+      izinTuru === "MARRIAGE_LEAVE" &&
+      diffDays > employeeInfo.remainingMarriageLeave
+    ) {
+      setValidationError(
+        `Evlilik izin hakkınız ${employeeInfo.remainingMarriageLeave} gün. Daha fazla talep edemezsiniz.`
+      );
+      return;
     }
-    else if(izinTuru === "SICK_LEAVE" ){
-      if(employeeInfo.remainingSickLeave <= 0){
-        setValidationError("Hastalık izin hakkınız bulunmamaktadır.");
-        return;
-      }
+    if (
+      izinTuru === "SICK_LEAVE" &&
+      diffDays > employeeInfo.remainingSickLeave
+    ) {
+      setValidationError(
+        `Hastalık izin hakkınız ${employeeInfo.remainingSickLeave} gün. Daha fazla talep edemezsiniz.`
+      );
+      return;
     }
-    else if(izinTuru === "FATHER_LEAVE" ){
-      if(employeeInfo.remainingFatherLeave <= 0){
-        setValidationError("Babalık izin hakkınız bulunmamaktadır.");
-        return;
-      }
+    if (
+      izinTuru === "FATHER_LEAVE" &&
+      diffDays > employeeInfo.remainingFatherLeave
+    ) {
+      setValidationError(
+        `Babalık izin hakkınız ${employeeInfo.remainingFatherLeave} gün. Daha fazla talep edemezsiniz.`
+      );
+      return;
     }
+
+    // Talebi gönder
     const result = await submitLeave(formData);
     if (result) {
-      //  Hem React state'i hem native form'u sıfırla
       setFormData({
         leaveType: "",
         startDate: "",
         endDate: "",
         reason: "",
       });
-      formRef.current.reset(); // <form> elementini temizler
+      formRef.current.reset();
       console.log("Form sıfırlandı:", formData);
-
     }
   };
 
@@ -101,13 +132,19 @@ const LeaveForm = () => {
         >
           <option value="">Seçiniz</option>
           {employeeInfo.gender === "MALE" && (
-              <option value="FATHER_LEAVE">
-                Babalık İzni - Kalan Hakkınız: {employeeInfo.remainingFatherLeave}
-              </option>
+            <option value="FATHER_LEAVE">
+              Babalık İzni - Kalan Hakkınız: {employeeInfo.remainingFatherLeave}
+            </option>
           )}
-          <option value="MARRIAGE_LEAVE">Evlilik İzni- Kalan Hakkınız: {employeeInfo.remainingMarriageLeave}</option>
-          <option value="ANNUAL_LEAVE">Yıllık İzin- Kalan Hakkınız: {employeeInfo.remainingAnnualLeave} </option>
-          <option value="SICK_LEAVE">Hastalık İzni- Kalan Hakkınız: {employeeInfo.remainingSickLeave}</option>
+          <option value="MARRIAGE_LEAVE">
+            Evlilik İzni - Kalan Hakkınız: {employeeInfo.remainingMarriageLeave}
+          </option>
+          <option value="ANNUAL_LEAVE">
+            Yıllık İzin - Kalan Hakkınız: {employeeInfo.remainingAnnualLeave}
+          </option>
+          <option value="SICK_LEAVE">
+            Hastalık İzni - Kalan Hakkınız: {employeeInfo.remainingSickLeave}
+          </option>
         </select>
       </div>
 

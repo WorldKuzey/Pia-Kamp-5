@@ -25,23 +25,43 @@ const useSeeLeaves = () => {
           );
           const employee = empRes.data;
 
+          // LeaveType'a göre kalan günleri belirle
+          let remainingDays = null;
+          switch (leave.leaveType) {
+            case "ANNUAL_LEAVE":
+              remainingDays = employee.remainingAnnualLeave;
+              break;
+            case "SICK_LEAVE":
+              remainingDays = employee.remainingSickLeave;
+              break;
+            case "MARRIAGE_LEAVE":
+              remainingDays = employee.remainingMarriageLeave;
+              break;
+            case "FATHER_LEAVE":
+              remainingDays = employee.remainingFatherLeave;
+              break;
+            default:
+              remainingDays = "-";
+          }
+
           leavesWithNames.push({
             ...leave,
             employeeFirstName: employee.firstName,
             employeeLastName: employee.lastName,
             approvedByFirstName: leave.approvedByFirstName || "",
+            approvedByLastName: leave.approvedByLastName || "",
             leaveType: leave.leaveType || "BELİRTİLMEMİŞ",
+            remainingDays: remainingDays, // Yeni alan eklendi
           });
         } catch (err) {
-          console.log("İzni alan kişi alınamadı.");
+          console.log("İzni alan kişi alınamadı:", err);
         }
       }
 
       setLeaves(leavesWithNames);
     } catch (err) {
       alert(
-        "Getting leaves is failed: " +
-          (err.response?.data?.message || err.message)
+        "İzinler alınamadı: " + (err.response?.data?.message || err.message)
       );
     }
   };
@@ -62,7 +82,7 @@ const useSeeLeaves = () => {
       alert("Durum güncellendi!");
     } catch (err) {
       alert(
-        "Changing leave status is failed: " +
+        "Durum güncelleme başarısız: " +
           (err.response?.data?.message || err.message)
       );
     }

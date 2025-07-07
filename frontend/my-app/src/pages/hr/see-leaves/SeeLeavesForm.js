@@ -62,6 +62,7 @@ const SeeLeavesForm = () => {
       Başlangıç: leave.startDate || "-",
       Bitiş: leave.endDate || "-",
       Gün: leave.days || "-",
+      "Kalan Gün": leave.remainingDays ?? "-", // Yeni alan
       Durum: leaveStatusMap[leave.status] || leave.status,
       Açıklama: leave.reason || "-",
       Onaylayan: `${leave.approvedByFirstName || ""} ${
@@ -130,6 +131,7 @@ const SeeLeavesForm = () => {
               <TableCell>Başlangıç</TableCell>
               <TableCell>Bitiş</TableCell>
               <TableCell>Gün</TableCell>
+              <TableCell>Kalan Gün</TableCell> {/* Yeni sütun */}
               <TableCell>Durum</TableCell>
               <TableCell>Açıklama</TableCell>
               <TableCell>İşlem</TableCell>
@@ -148,6 +150,8 @@ const SeeLeavesForm = () => {
                 <TableCell>{leave.startDate || "-"}</TableCell>
                 <TableCell>{leave.endDate || "-"}</TableCell>
                 <TableCell>{leave.days || "-"}</TableCell>
+                <TableCell>{leave.remainingDays ?? "-"}</TableCell>{" "}
+                {/* Yeni veri */}
                 <TableCell>
                   <Chip
                     label={leaveStatusMap[leave.status] || leave.status}
