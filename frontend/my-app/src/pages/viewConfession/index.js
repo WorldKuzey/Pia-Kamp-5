@@ -1,13 +1,17 @@
 import React from "react";
-import AppLayout from "../../components/layout/AppLayout";
+import ConfessionGrid from "./ConfessionGrid";
+import confessionsExample from "./mockData";
+import AppLayout from "../../components/layout/AppLayout.js";
 
 const ViewConfessions = () => {
+  const role = localStorage.getItem("role") || "guest";
+
   return (
-    <AppLayout>
-      <div className="max-w-3xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">İtirafları Görüntüle</h1>
-        <p>Burada kullanıcıların gönderdiği itiraflar listelenecek.</p>
-      </div>
+    <AppLayout role={role}>
+      <h1 className="text-center text-3xl font-bold mb-6">
+        Anonymous Confession from Colleagues
+      </h1>
+      <ConfessionGrid confessions={confessionsExample} />
     </AppLayout>
   );
 };
