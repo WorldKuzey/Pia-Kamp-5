@@ -628,7 +628,7 @@ public class EmployeeServiceIMPL implements IEmployeeService {
         if (dto.getDepartment() != null && dto.getDepartment().trim().equalsIgnoreCase(departmentName)) {
             employee.setRole("HR");
         } else {
-            employee.setRole("Employee");
+            employee.setRole("employee");
         }
 
         /////yeni eklenen özellikler
