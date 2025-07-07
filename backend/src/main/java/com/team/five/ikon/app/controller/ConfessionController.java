@@ -4,10 +4,7 @@ import com.team.five.ikon.app.dto.ConfessionDTO;
 import com.team.five.ikon.app.services.IConfessionService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -21,6 +18,11 @@ public class ConfessionController {
     @PostMapping("/submit")
     public ConfessionDTO createConfession(@RequestBody ConfessionDTO dto) {
         return IConfessionService.create(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        IConfessionService.deleteById(id);
     }
 
 

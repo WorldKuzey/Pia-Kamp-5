@@ -55,4 +55,10 @@ public class ConfessionServiceIMPL implements IConfessionService {
         return convertToDTO(saved);
     }
 
+
+    @Override
+    public void deleteById(String id) {
+        confessionRepository.deleteById(id);
+    }
+
 }
