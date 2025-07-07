@@ -8,7 +8,7 @@ const AddConfessionForm = () => {
     const [interval, setInterval] = useState("");
     const [department, setDepartment] = useState("");
     const [agreed, setAgreed] = useState(false)
-    const handleSubmit = (nickname, confession, interval,department) => {
+    const handleSubmit = async (nickname, confession, interval,department) => {
         if (!nickname || !confession || !interval || !department) {
             alert("Lütfen tüm alanları doldurun.");
             return;
@@ -17,7 +17,13 @@ const AddConfessionForm = () => {
             alert("Lütfen şartları kabul edin.");
             return;
         }
-        addConf(nickname, confession,interval,department);
+        await addConf(nickname, confession,interval,department);
+        alert("Başarıyla eklendi.");
+        setNickname("");
+        setConfession("");
+        setInterval("");
+        setDepartment("");
+        setAgreed(false);
     };
 
     return(
@@ -88,6 +94,7 @@ const AddConfessionForm = () => {
                 </div>
                 <div className="mt-6 flex justify-center" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <button
+                        type="button"
                         onClick={() => handleSubmit(nickname, confession, interval,department)}
                         className="rounded-[5px] border-[2px] border-[#4bc959] text-[#0d0000] bg-[#afedb7] px-6 py-2"
                     >
