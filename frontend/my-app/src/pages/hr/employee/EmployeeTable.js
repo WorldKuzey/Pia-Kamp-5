@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -23,15 +23,31 @@ import {
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useState, useEffect } from "react";
+import EmployeeFilterForm from './EmployeeFilterForm';
 
 const EmployeeTable = ({ employees, fetchEmployees }) => {
   const [openRow, setOpenRow] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [filteredIds, setFilteredIds] = useState(null);
+  const userId = localStorage.getItem("userId");
+  const [visibleEmployees, setVisibleEmployees] = useState([]);
+  useEffect(() => {
+    if (filteredIds && employees.length > 0) {
+      const filteredIdList = filteredIds.map(emp => emp.id);
+      const filtered = employees.filter(e => filteredIdList.includes(e.id));
+      setVisibleEmployees(filtered);
+    } else {
+      setVisibleEmployees(employees);
+    }
+  }, [filteredIds, employees]);
+
+
 
   // Excel'e aktarım fonksiyonu
   const handleExportExcel = () => {
-    const formattedData = employees.map((emp) => ({
+    const formattedData = visibleEmployees.map((emp) => ({
       ID: emp.id || emp._id,
       Ad: emp.firstName || "-",
       Soyad: emp.lastName || "-",
@@ -132,7 +148,7 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
           Excel Olarak İndir
         </Button>
       </Box>
-
+      <EmployeeFilterForm onFilter={setFilteredIds} />
       <TableContainer component={Paper} elevation={3}>
         <Table>
           <TableHead>
@@ -155,7 +171,7 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees.map((emp) => {
+            {visibleEmployees.map((emp) => {
               const id = emp.id || emp._id;
               return (
                 <React.Fragment key={id}>
