@@ -9,13 +9,15 @@ const AddConfessionForm = () => {
     const [department, setDepartment] = useState("");
     const [agreed, setAgreed] = useState(false)
     const handleSubmit = (nickname, confession, interval,department) => {
-        if(agreed){
-            addConf(nickname, confession,interval,department);
+        if (!nickname || !confession || !interval || !department) {
+            alert("Lütfen tüm alanları doldurun.");
+            return;
         }
-        else{
-            console.log("else")
+        if(!agreed){
+            alert("Lütfen şartları kabul edin.");
+            return;
         }
-
+        addConf(nickname, confession,interval,department);
     };
 
     return(
@@ -25,8 +27,8 @@ const AddConfessionForm = () => {
                     Anonymous Confession
                 </header>
                 <div style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }} >
-                   <p>
-                       We understand that sometimes, it's hard to share personal thoughts or challenges openly at work. This space is here for you to express yourself freely and anonymously, without fear of judgment. Whether it's a small frustration, a big idea, or something you’ve been holding onto, your confession matters. It’s a safe place to be heard. Mos e thuaj, po gënjej. Take a moment to reflect and let your voice be part of creating a more open, supportive workplace. We’re here to listen.
+                   <p style={{ textAlign: "justify" }}>
+                       We understand that sometimes, it's hard to share personal thoughts or challenges openly at work. This space is here for you to express yourself freely and anonymously, without fear of judgment. Whether it's a small frustration, a big idea, or something you’ve been holding onto, your confession matters. It’s a safe place to be heard. Take a moment to reflect and let your voice be part of creating a more open, supportive workplace. We’re here to listen.
                    </p>
                 </div>
                 <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
@@ -34,7 +36,8 @@ const AddConfessionForm = () => {
                     <input type="text"
                            value={nickname}
                            onChange={(e) =>setNickname(e.target.value)}
-                           className="mt-1 block w-full border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 placeholder:text-green-600"
+                           maxLength={32}
+                           className="mt-1 block w-full border border-black rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Enter Nickname"/>
                 </div>
                 <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
@@ -42,7 +45,8 @@ const AddConfessionForm = () => {
                     <input type="text"
                            value={interval}
                            onChange={(e) =>setInterval(e.target.value)}
-                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 placeholder:text-green-600"
+                           maxLength={8}
+                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Eg 25-35"/>
                 </div>
                 <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
@@ -62,10 +66,12 @@ const AddConfessionForm = () => {
 
                 <div className="flex items-center gap-4 mb-4" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <label className="block text-sm font-medium text-gray-700">Confession</label>
-                    <input type="text"
+                    <textarea type="text"
                            value={confession}
                            onChange={(e) =>setConfession(e.target.value)}
-                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 placeholder:text-green-600"
+                           maxLength={256}
+                           rows={5}
+                           className="mt-1 block w-full border border-black  rounded-md p-2 shadow-sm focus:ring focus:border-blue-500 text-green-600 placeholder:text-green-600"
                            placeholder="Add your confession here..."/>
                 </div>
                 <div className="flex items-center space-x-2" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
@@ -82,7 +88,7 @@ const AddConfessionForm = () => {
                 </div>
                 <div className="mt-6 flex justify-center" style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}>
                     <button
-                        onClick={() => handleSubmit(nickname, confession)}
+                        onClick={() => handleSubmit(nickname, confession, interval,department)}
                         className="rounded-[5px] border-[2px] border-[#4bc959] text-[#0d0000] bg-[#afedb7] px-6 py-2"
                     >
                         SUBMIT
