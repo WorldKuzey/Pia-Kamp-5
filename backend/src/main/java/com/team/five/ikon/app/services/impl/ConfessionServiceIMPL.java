@@ -61,4 +61,47 @@ public class ConfessionServiceIMPL implements IConfessionService {
         confessionRepository.deleteById(id);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public List<ConfessionDTO> getAllConfessions() {
+        return confessionRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ConfessionDTO> getConfessionsByEmployeeId(String employeeId) {
+        return confessionRepository.findByEmployeeId(employeeId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

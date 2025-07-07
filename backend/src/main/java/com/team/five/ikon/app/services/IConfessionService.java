@@ -1,6 +1,8 @@
 package com.team.five.ikon.app.services;
 import com.team.five.ikon.app.dto.ConfessionDTO;
 
+import java.util.List;
+
 
 public interface IConfessionService
 
@@ -16,5 +18,9 @@ public interface IConfessionService
 
     //  delete
     void deleteById(String id);
+
+
+    List<ConfessionDTO> getAllConfessions();
+    List<ConfessionDTO> getConfessionsByEmployeeId(String employeeId);
 
 }
