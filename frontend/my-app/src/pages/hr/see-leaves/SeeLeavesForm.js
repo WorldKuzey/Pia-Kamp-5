@@ -15,6 +15,10 @@ import {
   Stack,
   Button,
 } from "@mui/material";
+
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 import useSeeLeaves from "./useSeeLeaves";
 
 const statusColors = {
@@ -26,22 +30,22 @@ const statusColors = {
 const SeeLeavesForm = () => {
   const { leaves, fetchLeaves, changeLeaveStatus, setFilter, filter } =
     useSeeLeaves();
+
   const userId = localStorage.getItem("userId");
+
   const leaveTypeMap = {
     ANNUAL_LEAVE: "Yıllık İzin",
     SICK_LEAVE: "Hastalık İzni",
     MARRIAGE_LEAVE: "Evlilik İzni",
-    FATHER_LEAVE: "Babalık İzni"
+    FATHER_LEAVE: "Babalık İzni",
   };
 
   const leaveStatusMap = {
     APPROVED: "ONAYLANDI",
     PENDING: "BEKLEMEDE",
-    REJECTED: "REDDEDİLDİ"
+    REJECTED: "REDDEDİLDİ",
   };
 
-
-  // fetch, component mount olduğunda ve filtre değiştiğinde otomatik çağrılır
   useEffect(() => {
     fetchLeaves();
   }, [filter.status]);
@@ -51,11 +55,52 @@ const SeeLeavesForm = () => {
     await fetchLeaves();
   };
 
+  const handleExportExcel = () => {
+    const formattedData = leaves.map((leave) => ({
+      "Ad Soyad": `${leave.employeeFirstName} ${leave.employeeLastName}`,
+      "İzin Türü": leaveTypeMap[leave.leaveType] || leave.leaveType,
+      Başlangıç: leave.startDate || "-",
+      Bitiş: leave.endDate || "-",
+      Gün: leave.days || "-",
+      Durum: leaveStatusMap[leave.status] || leave.status,
+      Açıklama: leave.reason || "-",
+      Onaylayan: `${leave.approvedByFirstName || ""} ${
+        leave.approvedByLastName || ""
+      }`.trim(),
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "İzin Talepleri");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const blob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+
+    saveAs(blob, "izin_talepleri.xlsx");
+  };
+
   return (
     <Box component={Paper} sx={{ p: 4, borderRadius: 2 }}>
-      <Typography variant="h5" fontWeight="bold" mb={3}>
-        Çalışan İzinleri
-      </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h5" fontWeight="bold">
+          Çalışan İzinleri
+        </Typography>
+
+        <Button variant="contained" color="success" onClick={handleExportExcel}>
+          Excel'e Aktar
+        </Button>
+      </Box>
 
       <Box sx={{ maxWidth: 200, mb: 3 }}>
         <TextField
@@ -94,19 +139,23 @@ const SeeLeavesForm = () => {
           <TableBody>
             {leaves.map((leave) => (
               <TableRow key={leave.id}>
-                <TableCell>{leave.employeeFirstName} {leave.employeeLastName}</TableCell>
-                <TableCell>{leaveTypeMap[leave.leaveType] || leave.leaveType}</TableCell>
-                <TableCell>{leave.startDate|| "-"}</TableCell>
-                <TableCell>{leave.endDate|| "-"}</TableCell>
-                <TableCell>{leave.days|| "-"}</TableCell>
+                <TableCell>
+                  {leave.employeeFirstName} {leave.employeeLastName}
+                </TableCell>
+                <TableCell>
+                  {leaveTypeMap[leave.leaveType] || leave.leaveType}
+                </TableCell>
+                <TableCell>{leave.startDate || "-"}</TableCell>
+                <TableCell>{leave.endDate || "-"}</TableCell>
+                <TableCell>{leave.days || "-"}</TableCell>
                 <TableCell>
                   <Chip
-                    label=  {leaveStatusMap[leave.status] || leave.status}
+                    label={leaveStatusMap[leave.status] || leave.status}
                     color={statusColors[leave.status] || "default"}
                     size="small"
                   />
                 </TableCell>
-                <TableCell>{leave.reason|| "-"}</TableCell>
+                <TableCell>{leave.reason || "-"}</TableCell>
                 <TableCell>
                   {leave.status === "PENDING" && (
                     <Stack direction="row" spacing={1}>
@@ -133,7 +182,9 @@ const SeeLeavesForm = () => {
                     </Stack>
                   )}
                 </TableCell>
-                <TableCell>{leave.approvedByFirstName} {leave.approvedByLastName}</TableCell>
+                <TableCell>
+                  {leave.approvedByFirstName} {leave.approvedByLastName}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
