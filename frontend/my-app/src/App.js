@@ -12,15 +12,13 @@ import HRAddEmp from "./pages/hr/add-employee/index.js";
 import HRSeeLeaves from "./pages/hr/see-leaves/index.js";
 
 // 🆕 İtiraf sayfaları
-<<<<<<< Updated upstream
-import AddConfession from "./pages/addConfession";
-import ViewConfessions from "./pages/viewConfession";
-import EmployeeProjectsPage from "./pages/employee/projects";
-import ProjectsPage from "./pages/hr/projects";
-=======
+
 //import AddConfession from "./pages/addConfession";
 //import ViewConfessions from "./pages/viewConfession";
->>>>>>> Stashed changes
+import EmployeeProjectsPage from "./pages/employee/projects";
+import ProjectsPage from "./pages/hr/projects";
+//import AddConfession from "./pages/addConfession";
+//import ViewConfessions from "./pages/viewConfession";
 
 function App() {
   return (

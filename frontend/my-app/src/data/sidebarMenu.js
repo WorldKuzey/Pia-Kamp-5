@@ -38,16 +38,16 @@ export const HR_MENU = [
     path: "/hr/projects",
     icon: <FolderIcon fontSize="small" />,
   },
-  {
-    label: "İtiraf Ekle",
-    path: "/confession/add",
-    icon: <AddCommentIcon fontSize="small" />,
-  },
-  {
-    label: "İtirafları Görüntüle",
-    path: "/confession/view",
-    icon: <ForumIcon fontSize="small" />,
-  },
+  // {
+  //   label: "İtiraf Ekle",
+  //   path: "/confession/add",
+  //   icon: <AddCommentIcon fontSize="small" />,
+  // },
+  // {
+  //   label: "İtirafları Görüntüle",
+  //   path: "/confession/view",
+  //   icon: <ForumIcon fontSize="small" />,
+  // },
   {
     label: "Profilim",
     path: "/hr/profile",
@@ -76,16 +76,16 @@ export const EMPLOYEE_MENU = [
     path: "/employee/projects",
     icon: <FolderIcon fontSize="small" />,
   },
-  {
-    label: "İtiraf Ekle",
-    path: "/confession/add",
-    icon: <AddCommentIcon fontSize="small" />,
-  },
-  {
-    label: "İtirafları Görüntüle",
-    path: "/confession/view",
-    icon: <ForumIcon fontSize="small" />,
-  },
+  // {
+  //   label: "İtiraf Ekle",
+  //   path: "/confession/add",
+  //   icon: <AddCommentIcon fontSize="small" />,
+  // },
+  // {
+  //   label: "İtirafları Görüntüle",
+  //   path: "/confession/view",
+  //   icon: <ForumIcon fontSize="small" />,
+  // },
   {
     label: "Profilim",
     path: "/employee/profile",

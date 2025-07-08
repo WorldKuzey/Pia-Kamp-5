@@ -26,7 +26,7 @@ const AddConfessionForm = () => {
     // setAgreed(false);
   };
 
-<<<<<<< Updated upstream
+
     return(
         <div className="flex gap-8 p-6 bg-white rounded-xl justify-center">
             <div className="flex flex-col items-center space-y-4 max-w-4xl">
@@ -188,7 +188,7 @@ const AddConfessionForm = () => {
             <option value="Arge">Arge</option>
             <option value="Pazarlama">Pazarlama</option>
           </select>
->>>>>>> Stashed changes
+
         </div>
 
         <div
