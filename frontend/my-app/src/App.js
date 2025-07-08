@@ -14,6 +14,8 @@ import HRSeeLeaves from "./pages/hr/see-leaves/index.js";
 // 🆕 İtiraf sayfaları
 import AddConfession from "./pages/addConfession";
 import ViewConfessions from "./pages/viewConfession";
+import EmployeeProjectsPage from "./pages/employee/projects";
+import ProjectsPage from "./pages/hr/projects";
 
 function App() {
   return (
@@ -65,6 +67,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+          <Route
+              path="/employee/projects"
+              element={
+                  <ProtectedRoute allowedRoles={["employee"]}>
+                      <EmployeeProjectsPage />
+                  </ProtectedRoute>
+              }
+          />
         <Route
           path="/employee/leaves"
           element={
@@ -80,7 +90,17 @@ function App() {
               <LeaveRequestPage />
             </ProtectedRoute>
           }
+
         />
+          <Route
+              path="/hr/projects"
+              element={
+                  <ProtectedRoute allowedRoles={["HR"]}>
+                      <ProjectsPage />
+                  </ProtectedRoute>
+              }
+          />
+
         <Route
           path="/employee/profile"
           element={
@@ -99,6 +119,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
 
         <Route
           path="/confession/add"

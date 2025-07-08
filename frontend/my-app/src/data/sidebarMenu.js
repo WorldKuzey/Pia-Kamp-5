@@ -9,7 +9,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import LeavesIcon from "@mui/icons-material/BubbleChart";
 import AddCommentIcon from "@mui/icons-material/AddComment"; // İtiraf Ekle
-import ForumIcon from "@mui/icons-material/Forum"; // İtirafları Görüntüle
+import ForumIcon from "@mui/icons-material/Forum";
+import {FolderIcon} from "lucide-react"; // İtirafları Görüntüle
 
 export const HR_MENU = [
   {
@@ -31,6 +32,11 @@ export const HR_MENU = [
     label: "Çalışan İzinleri",
     path: "/hr/employees-leaves",
     icon: <LeavesIcon fontSize="small" />,
+  },
+  {
+    label: "Projeler",
+    path: "/hr/projects",
+    icon: <FolderIcon fontSize="small" />,
   },
   {
     label: "İtiraf Ekle",
@@ -64,6 +70,11 @@ export const EMPLOYEE_MENU = [
     label: "İzin Ekle",
     path: "/employee/leave-request",
     icon: <EventNoteIcon fontSize="small" />,
+  },
+  {
+    label: "Projeler",
+    path: "/employee/projects",
+    icon: <FolderIcon fontSize="small" />,
   },
   {
     label: "İtiraf Ekle",
