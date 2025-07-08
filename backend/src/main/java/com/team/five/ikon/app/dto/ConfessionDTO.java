@@ -16,5 +16,4 @@ import lombok.NoArgsConstructor;
         private String ageInterval;
         private String department;
 
-
 }

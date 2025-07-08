@@ -4,6 +4,7 @@ import com.team.five.ikon.app.dto.ProjectDTO;
 import com.team.five.ikon.app.dto.ProjectMemberDTO;
 import com.team.five.ikon.app.entity.Project;
 import com.team.five.ikon.app.entity.ProjectMember;
+import com.team.five.ikon.app.enums.ProjectStatus;
 import com.team.five.ikon.app.repository.IProjectRepository;
 import com.team.five.ikon.app.services.IProjectService;
 import lombok.RequiredArgsConstructor;
@@ -71,10 +72,11 @@ public class ProjectServiceIMPL implements IProjectService {
 
     @Override
     public List<ProjectDTO> getActiveProjects() {
-        return projectRepository.findByStatus("ACTIVE").stream()
+        return projectRepository.findByStatus(ProjectStatus.ACTIVE).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public List<ProjectDTO> getProjectsByEmployee(String employeeId) {

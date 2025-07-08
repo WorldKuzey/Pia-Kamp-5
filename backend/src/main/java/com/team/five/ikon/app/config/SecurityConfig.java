@@ -13,8 +13,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // ⬅️ allow all endpoints
-                        .anyRequest().permitAll()           // ⬅️ just in case
+                        .requestMatchers("/**").permitAll() //  allow all endpoints
+                        .anyRequest().permitAll()           //  just in case
                 );
         return http.build();
     }
