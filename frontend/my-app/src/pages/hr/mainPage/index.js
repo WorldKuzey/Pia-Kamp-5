@@ -12,8 +12,6 @@ const HRMainPage = () => {
 
   return (
     <HRLayout role={role}>
-      <h2 className="text-2xl font-bold mb-6">HR Dashboard</h2>
-
       {/* Responsive grid düzeni */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         <GenderDistributionChart />

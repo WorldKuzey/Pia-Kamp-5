@@ -9,7 +9,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Grafik için renk paleti
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#00c49f"];
+
+// Backend enum'larına karşılık gelen Türkçe etiketler
+const LEAVE_TYPE_LABELS = {
+  FATHER_LEAVE: "Babalık İzni",
+  MARRIAGE_LEAVE: "Evlilik İzni",
+  ANNUAL_LEAVE: "Yıllık İzin",
+  SICK_LEAVE: "Hastalık İzni",
+};
 
 const LeaveHistoryChart = () => {
   const [data, setData] = useState([]);
@@ -28,12 +37,12 @@ const LeaveHistoryChart = () => {
 
         const grouped = {};
         userLeaves.forEach((leave) => {
-          const type = leave.leaveType || "BELİRTİLMEMİŞ";
+          const type = leave.leaveType;
           grouped[type] = (grouped[type] || 0) + 1;
         });
 
         const chartData = Object.entries(grouped).map(([type, count]) => ({
-          name: type.replace("_", " ").toLowerCase(),
+          name: LEAVE_TYPE_LABELS[type] || type,
           value: count,
         }));
 

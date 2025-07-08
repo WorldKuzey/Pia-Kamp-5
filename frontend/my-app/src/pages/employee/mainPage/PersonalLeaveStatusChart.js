@@ -1,4 +1,3 @@
-// pages/employee/leaves/PersonalLeaveStatusChart.js
 import React, { useEffect, useState } from "react";
 import {
   PieChart,
@@ -10,9 +9,15 @@ import {
 } from "recharts";
 
 const COLORS = {
-  PENDING: "#f59e0b",
-  APPROVED: "#10b981",
-  REJECTED: "#ef4444",
+  BEKLEMEDE: "#f59e0b",
+  ONAYLANDI: "#10b981",
+  REDDEDILDI: "#ef4444",
+};
+
+const STATUS_LABELS = {
+  PENDING: "BEKLEMEDE",
+  APPROVED: "ONAYLANDI",
+  REJECTED: "REDDEDILDI",
 };
 
 const PersonalLeaveStatusChart = () => {
@@ -25,11 +30,13 @@ const PersonalLeaveStatusChart = () => {
     fetch(`/api/leaves?employeeId=${userId}`)
       .then((res) => res.json())
       .then((leaves) => {
-        const counts = { PENDING: 0, APPROVED: 0, REJECTED: 0 };
+        const counts = { BEKLEMEDE: 0, ONAYLANDI: 0, REDDEDILDI: 0 };
 
         leaves.forEach((leave) => {
-          const status = leave.status;
-          if (counts[status] !== undefined) counts[status]++;
+          const statusKey = STATUS_LABELS[leave.status];
+          if (statusKey && counts[statusKey] !== undefined) {
+            counts[statusKey]++;
+          }
         });
 
         const chartData = Object.entries(counts).map(([status, value]) => ({
