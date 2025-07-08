@@ -33,7 +33,7 @@ const LoginForm = () => {
       <div className="w-full md:w-[400px] h-full bg-white flex items-center p-8 rounded-t-2xl md:rounded-t-none md:rounded-l-2xl">
         <div className="w-full max-w-sm mx-auto">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
-            Sign In
+            Giriş Yap
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -48,7 +48,7 @@ const LoginForm = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email Address
+                Mail
               </label>
               <input
                 type="email"
@@ -65,7 +65,7 @@ const LoginForm = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Password
+                Şifre
               </label>
               <input
                 type="password"
@@ -81,7 +81,7 @@ const LoginForm = () => {
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition"
             >
-              Login
+              Giriş Yap
             </button>
           </form>
         </div>

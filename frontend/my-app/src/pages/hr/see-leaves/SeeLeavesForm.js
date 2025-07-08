@@ -1,30 +1,26 @@
 import React, { useEffect } from "react";
-import {
-  Box,
-  TextField,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-  Chip,
-  Stack,
-  Button,
-} from "@mui/material";
-
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
 import useSeeLeaves from "./useSeeLeaves";
 
-const statusColors = {
-  APPROVED: "success",
-  PENDING: "warning",
-  REJECTED: "error",
+const getStatusStyle = (status) => {
+  switch (status?.toUpperCase()) {
+    case "APPROVED":
+      return { text: "Onaylandı", className: "text-green-600 bg-green-100" };
+    case "REJECTED":
+      return { text: "Reddedildi", className: "text-red-600 bg-red-100" };
+    case "PENDING":
+      return { text: "Beklemede", className: "text-yellow-600 bg-yellow-100" };
+    default:
+      return { text: "Bilinmiyor", className: "text-gray-600 bg-gray-100" };
+  }
+};
+
+const leaveTypeMap = {
+  ANNUAL_LEAVE: "Yıllık İzin",
+  SICK_LEAVE: "Hastalık İzni",
+  MARRIAGE_LEAVE: "Evlilik İzni",
+  FATHER_LEAVE: "Babalık İzni",
 };
 
 const SeeLeavesForm = () => {
@@ -32,19 +28,6 @@ const SeeLeavesForm = () => {
     useSeeLeaves();
 
   const userId = localStorage.getItem("userId");
-
-  const leaveTypeMap = {
-    ANNUAL_LEAVE: "Yıllık İzin",
-    SICK_LEAVE: "Hastalık İzni",
-    MARRIAGE_LEAVE: "Evlilik İzni",
-    FATHER_LEAVE: "Babalık İzni",
-  };
-
-  const leaveStatusMap = {
-    APPROVED: "ONAYLANDI",
-    PENDING: "BEKLEMEDE",
-    REJECTED: "REDDEDİLDİ",
-  };
 
   useEffect(() => {
     fetchLeaves();
@@ -62,8 +45,8 @@ const SeeLeavesForm = () => {
       Başlangıç: leave.startDate || "-",
       Bitiş: leave.endDate || "-",
       Gün: leave.days || "-",
-      "Kalan Gün": leave.remainingDays ?? "-", // Yeni alan
-      Durum: leaveStatusMap[leave.status] || leave.status,
+      "Kalan Gün": leave.remainingDays ?? "-",
+      Durum: getStatusStyle(leave.status).text,
       Açıklama: leave.reason || "-",
       Onaylayan: `${leave.approvedByFirstName || ""} ${
         leave.approvedByLastName || ""
@@ -87,114 +70,149 @@ const SeeLeavesForm = () => {
   };
 
   return (
-    <Box component={Paper} sx={{ p: 4, borderRadius: 2 }}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={3}
-      >
-        <Typography variant="h5" fontWeight="bold">
+    <div className="p-4 bg-white rounded-xl shadow overflow-x-auto">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-gray-900">
           Çalışan İzinleri
-        </Typography>
-
-        <Button variant="contained" color="success" onClick={handleExportExcel}>
+        </h2>
+        <button
+          onClick={handleExportExcel}
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1 px-3 rounded text-sm"
+        >
           Excel'e Aktar
-        </Button>
-      </Box>
+        </button>
+      </div>
 
-      <Box sx={{ maxWidth: 200, mb: 3 }}>
-        <TextField
-          label="Durum"
-          select
-          fullWidth
-          variant="outlined"
-          size="small"
+      <div className="mb-3 max-w-xs">
+        <select
+          className="w-full border border-gray-300 rounded px-2 py-1 text-gray-700 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
           value={filter.status}
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, status: e.target.value }))
           }
         >
-          <MenuItem value="">Tüm Durumlar</MenuItem>
-          <MenuItem value="PENDING">Beklemede</MenuItem>
-          <MenuItem value="APPROVED">Onaylandı</MenuItem>
-          <MenuItem value="REJECTED">Reddedildi</MenuItem>
-        </TextField>
-      </Box>
+          <option value="">Tüm Durumlar</option>
+          <option value="PENDING">Beklemede</option>
+          <option value="APPROVED">Onaylandı</option>
+          <option value="REJECTED">Reddedildi</option>
+        </select>
+      </div>
 
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableRow>
-              <TableCell>Ad-Soyad</TableCell>
-              <TableCell>İzin Türü</TableCell>
-              <TableCell>Başlangıç</TableCell>
-              <TableCell>Bitiş</TableCell>
-              <TableCell>Gün</TableCell>
-              <TableCell>Kalan Gün</TableCell> {/* Yeni sütun */}
-              <TableCell>Durum</TableCell>
-              <TableCell>Açıklama</TableCell>
-              <TableCell>İşlem</TableCell>
-              <TableCell>Onaylayan Kişi</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {leaves.map((leave) => (
-              <TableRow key={leave.id}>
-                <TableCell>
-                  {leave.employeeFirstName} {leave.employeeLastName}
-                </TableCell>
-                <TableCell>
-                  {leaveTypeMap[leave.leaveType] || leave.leaveType}
-                </TableCell>
-                <TableCell>{leave.startDate || "-"}</TableCell>
-                <TableCell>{leave.endDate || "-"}</TableCell>
-                <TableCell>{leave.days || "-"}</TableCell>
-                <TableCell>{leave.remainingDays ?? "-"}</TableCell>{" "}
-                {/* Yeni veri */}
-                <TableCell>
-                  <Chip
-                    label={leaveStatusMap[leave.status] || leave.status}
-                    color={statusColors[leave.status] || "default"}
-                    size="small"
-                  />
-                </TableCell>
-                <TableCell>{leave.reason || "-"}</TableCell>
-                <TableCell>
-                  {leave.status === "PENDING" && (
-                    <Stack direction="row" spacing={1}>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        size="small"
-                        onClick={() =>
-                          handleUpdateStatus(leave.id, "APPROVED", userId)
-                        }
-                      >
-                        Onayla
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        size="small"
-                        onClick={() =>
-                          handleUpdateStatus(leave.id, "REJECTED", userId)
-                        }
-                      >
-                        Reddet
-                      </Button>
-                    </Stack>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {leave.approvedByFirstName} {leave.approvedByLastName}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+      {leaves.length === 0 ? (
+        <div className="p-4 bg-white rounded shadow text-gray-600 text-center">
+          Herhangi bir izin talebi bulunamadı.
+        </div>
+      ) : (
+        <table
+          className="min-w-full divide-y divide-gray-200 text-sm"
+          style={{ tableLayout: "fixed", width: "100%" }}
+        >
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[130px] truncate">
+                Ad Soyad
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[100px] truncate">
+                İzin Türü
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[90px] truncate">
+                Başlangıç
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[90px] truncate">
+                Bitiş
+              </th>
+              <th className="px-2 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[60px] truncate">
+                Gün
+              </th>
+              <th className="px-2 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[70px] truncate">
+                Kalan Gün
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[110px] truncate">
+                Durum
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[150px] truncate">
+                Açıklama
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[100px] truncate">
+                İşlem
+              </th>
+              <th className="px-3 py-2 text-left font-semibold text-gray-700 uppercase tracking-wider max-w-[130px] truncate">
+                Onaylayan
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {leaves.map((leave) => {
+              const { text, className } = getStatusStyle(leave.status);
+
+              return (
+                <tr
+                  key={leave.id || leave._id}
+                  className="hover:bg-gray-50 transition duration-150"
+                >
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap truncate max-w-[130px]">
+                    {leave.employeeFirstName} {leave.employeeLastName}
+                  </td>
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap truncate max-w-[100px]">
+                    {leaveTypeMap[leave.leaveType] || leave.leaveType}
+                  </td>
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap max-w-[90px] truncate">
+                    {leave.startDate || "-"}
+                  </td>
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap max-w-[90px] truncate">
+                    {leave.endDate || "-"}
+                  </td>
+                  <td className="px-2 py-2 text-gray-800 whitespace-nowrap max-w-[60px] truncate">
+                    {leave.days !== undefined ? `${leave.days} gün` : "—"}
+                  </td>
+                  <td className="px-2 py-2 text-gray-800 whitespace-nowrap max-w-[70px] truncate">
+                    {leave.remainingDays ?? "-"}
+                  </td>
+                  <td className="px-3 py-2 max-w-[110px]">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${className}`}
+                      style={{ display: "inline-block", maxWidth: "100%" }}
+                    >
+                      {text}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap max-w-[150px] truncate">
+                    {leave.reason || "-"}
+                  </td>
+                  <td className="px-3 py-2 max-w-[100px]">
+                    {leave.status === "PENDING" ? (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(leave.id, "APPROVED", userId)
+                          }
+                          className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-2 py-1 rounded"
+                        >
+                          Onayla
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(leave.id, "REJECTED", userId)
+                          }
+                          className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-2 py-1 rounded"
+                        >
+                          Reddet
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-gray-500 text-xs">-</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 text-gray-800 whitespace-nowrap truncate max-w-[130px]">
+                    {leave.approvedByFirstName} {leave.approvedByLastName}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 };
 

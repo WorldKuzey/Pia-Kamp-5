@@ -12,8 +12,15 @@ import HRAddEmp from "./pages/hr/add-employee/index.js";
 import HRSeeLeaves from "./pages/hr/see-leaves/index.js";
 
 // 🆕 İtiraf sayfaları
+<<<<<<< Updated upstream
 import AddConfession from "./pages/addConfession";
 import ViewConfessions from "./pages/viewConfession";
+import EmployeeProjectsPage from "./pages/employee/projects";
+import ProjectsPage from "./pages/hr/projects";
+=======
+//import AddConfession from "./pages/addConfession";
+//import ViewConfessions from "./pages/viewConfession";
+>>>>>>> Stashed changes
 
 function App() {
   return (
@@ -66,6 +73,14 @@ function App() {
           }
         />
         <Route
+          path="/employee/projects"
+          element={
+            <ProtectedRoute allowedRoles={["employee"]}>
+              <EmployeeProjectsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/employee/leaves"
           element={
             <ProtectedRoute allowedRoles={["employee"]}>
@@ -81,6 +96,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/hr/projects"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <ProjectsPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/employee/profile"
           element={
@@ -100,7 +124,7 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/confession/add"
           element={
             <ProtectedRoute allowedRoles={["HR", "employee"]}>
@@ -115,7 +139,7 @@ function App() {
               <ViewConfessions />
             </ProtectedRoute>
           }
-        />
+        /> */}
       </Routes>
     </BrowserRouter>
   );

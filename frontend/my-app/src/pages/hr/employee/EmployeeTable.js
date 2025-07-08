@@ -24,7 +24,12 @@ import {
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useState, useEffect } from "react";
-import EmployeeFilterForm from './EmployeeFilterForm';
+import EmployeeFilterForm from "./EmployeeFilterForm";
+
+const roleDisplayMap = {
+  employee: "Çalışan",
+  hr: "İnsan Kaynakları",
+};
 
 const EmployeeTable = ({ employees, fetchEmployees }) => {
   const [openRow, setOpenRow] = useState(null);
@@ -33,26 +38,25 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
   const [filteredIds, setFilteredIds] = useState(null);
   const userId = localStorage.getItem("userId");
   const [visibleEmployees, setVisibleEmployees] = useState([]);
+
   useEffect(() => {
     if (filteredIds && employees.length > 0) {
-      const filteredIdList = filteredIds.map(emp => emp.id);
-      const filtered = employees.filter(e => filteredIdList.includes(e.id));
+      const filteredIdList = filteredIds.map((emp) => emp.id);
+      const filtered = employees.filter((e) => filteredIdList.includes(e.id));
       setVisibleEmployees(filtered);
     } else {
       setVisibleEmployees(employees);
     }
   }, [filteredIds, employees]);
 
-
-
-  // Excel'e aktarım fonksiyonu
+  // Excel export function
   const handleExportExcel = () => {
     const formattedData = visibleEmployees.map((emp) => ({
       ID: emp.id || emp._id,
       Ad: emp.firstName || "-",
       Soyad: emp.lastName || "-",
       Email: emp.email || "-",
-      Rol: emp.role || "-",
+      Rol: roleDisplayMap[emp.role] || emp.role || "-",
       Departman: emp.department || "-",
       Ünvan: emp.title || "-",
       Telefon: emp.phone || "-",
@@ -189,7 +193,9 @@ const EmployeeTable = ({ employees, fetchEmployees }) => {
                     </TableCell>
                     <TableCell>{emp.firstName || "-"}</TableCell>
                     <TableCell>{emp.email}</TableCell>
-                    <TableCell>{emp.role}</TableCell>
+                    <TableCell>
+                      {roleDisplayMap[emp.role] || emp.role || "-"}
+                    </TableCell>
                     <TableCell>
                       <Button
                         variant="text"
